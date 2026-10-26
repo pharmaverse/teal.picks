@@ -43,6 +43,9 @@ determine <- function(x, data) {
   if (is.null(data)) { # this happens when <previous>$selected=NULL
     return(list(x = .nullify_pick(x)))
   }
+
+  is_choices_delayed <- rlang::is_quosure(x$choices) || .is_predicate(x$choices)
+  is_selected_eager <- is.character(x$selected)
   UseMethod("determine")
 }
 
@@ -118,9 +121,14 @@ determine.values <- function(x, data) {
     return(list(x = x))
   }
 
+  default_fns <- identical(deparse1(x$selected), deparse1(function(x) !is.na(x)))
   x$choices <- .determine_choices(x$choices, data = data) # .determine_* uses names
   x$selected <- if (length(x$choices)) {
-    .determine_selected(x$selected, data = stats::setNames(x$choices, x$choices), multiple = attr(x, "multiple"))
+    .determine_selected(x$selected,
+      data = stats::setNames(x$choices, x$choices),
+      multiple = attr(x, "multiple"),
+      warn = !default_fns
+    )
   }
 
   # Only return max and minimal value
@@ -207,14 +215,16 @@ determine.values <- function(x, data) {
 }
 
 #' @rdname dot-determine_choices
-.determine_selected <- function(x, data, multiple = FALSE) {
+.determine_selected <- function(x, data, multiple = FALSE, warn = TRUE) {
   if (!is.null(x) && length(data)) {
     out <- .determine_delayed(data = data, x = x)
     if (!isTRUE(multiple) && length(out) > 1) {
-      warning(
-        "`multiple` has been set to `FALSE`, while selected contains multiple values, forcing to select first:",
-        rlang::as_label(x)
-      )
+      if (warn) {
+        warning(
+          "`multiple` has been set to `FALSE`, while selected contains multiple values, forcing to select first:",
+          rlang::as_label(x)
+        )
+      }
       out <- out[1]
     }
     out
@@ -250,9 +260,15 @@ determine.values <- function(x, data) {
 
   if (length(out) == 0) {
     warning(
-      "None of the `choices/selected`: ", rlang::as_label(x), "\n",
-      "are subset of: ", toString(.possible_choices(data), width = 30), "\n",
-      "Emptying choices..."
+      warningCondition(
+        paste0(
+          "None of the `choices/selected`: ", rlang::as_label(x), "\n",
+          "are subset of: ", toString(.possible_choices(data), width = 30), "\n",
+          "Emptying choices...",
+          if (!is.function(x) && !rlang::is_quosure(x)) "\nSetting explicit requirements might be the cause."
+        ),
+        class = c("pick_delayed", "picks_delayed")
+      )
     )
     return(NULL)
   }

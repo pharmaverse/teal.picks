@@ -15,7 +15,8 @@
 #' contains [`filter_spec`] then `as.picks` is unable to provide reliable [`picks`] equivalent.
 #'
 #' @return A `picks` object when conversion is possible, otherwise `NULL` with a warning (if `quiet = FALSE`).
-#' @examples
+#' @examplesIf requireNamespace("teal.transform", quietly = TRUE)
+#'
 #' # convert des with eager select_spec
 #'
 #' if (requireNamespace("teal.transform", quietly = TRUE)) {
@@ -102,7 +103,7 @@ as.picks <- function(x, quiet = FALSE) { # nolint: object_name_linter.
 }
 
 #' @rdname as.picks
-#' @examples
+#' @examplesIf requireNamespace("teal.transform", quietly = TRUE)
 #' # teal_transform_module build on teal.transform
 #'
 #' teal_transform_filter(

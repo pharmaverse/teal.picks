@@ -48,5 +48,9 @@ coverage.*
 ^revdep$
 ^\.covrignore$
 ^inst/cheatsheet$
-AGENTS.md
+^AGENTS\.md$
 ^.devcontainer$
+^CLAUDE\.md$
+^vignettes/_AGENTS\.Rmd$
+^cran-comments\.md$
+^CRAN-SUBMISSION$

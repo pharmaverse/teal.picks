@@ -11,7 +11,15 @@
 #' - Single `picks` objects for a single input
 #' - Named lists of `picks` objects for multiple inputs
 #'
-#' @param id (`character(1)`) Shiny module ID
+#' @param id (`character(1)`) Shiny module ID. Required when `picks` is a single `picks` object.
+#'
+#' Only when `picks` is a named list, `id` is optional and can be `NULL` or `""`:
+#' - If provided, it is used as a namespace prefix for each list element, so the
+#'   input IDs become `<id>-<name>`.
+#' - If `NULL` or `""`, the names of the list elements are used directly as the input IDs.
+#'   This allows each element to be placed separately in a custom UI (e.g. with
+#'   `picks_ui(id = "<name>", picks = picks[["<name>"]])`), while still resolving
+#'   all of them with a single `picks_srv()` call.
 #' @param picks (`picks` or `list`) object created by `picks()` or a named list of such objects
 #' @param container (`character(1)` or `function`) UI container type. Can be one of `htmltools::tags`
 #' functions. By default, elements are wrapped in a package-specific drop-down.
@@ -66,66 +74,76 @@ NULL
 #' @rdname picks_module
 #' @export
 picks_ui <- function(id, picks, container = "badge_dropdown") {
-  checkmate::assert_string(id)
   UseMethod("picks_ui", picks)
 }
 
 #' @rdname picks_module
 #' @export
-picks_ui.list <- function(id, picks, container) {
-  checkmate::assert_list(picks, names = "unique")
+picks_ui.list <- function(id = "", picks, container = "badge_dropdown") {
+  checkmate::assert_list(picks, names = "unique", types = "picks")
+  checkmate::assert_string(id, null.ok = TRUE)
+  if (identical(id, "")) {
+    id <- NULL
+  }
   ns <- shiny::NS(id)
-  sapply(
+  out <- lapply(
     Filter(length, names(picks)),
-    USE.NAMES = TRUE,
     function(name) picks_ui(ns(name), picks[[name]], container = container)
   )
+  htmltools::tagList(out)
 }
 
 #' @rdname picks_module
 #' @export
-picks_ui.picks <- function(id, picks, container) {
+picks_ui.picks <- function(id, picks, container = "badge_dropdown") {
+  checkmate::assert_string(id)
+  checkmate::assert_class(picks, "picks")
   ns <- shiny::NS(id)
   badge_label <- shiny::uiOutput(ns("summary"), container = htmltools::tags$span)
   content <- lapply(picks, function(x) .pick_ui(id = ns(methods::is(x))))
-  if (missing(container)) {
-    htmltools::tags$div(
-      if (all(vapply(picks, is_pick_fixed, logical(1)))) {
-        badge_fixed(id = ns("inputs"), badge_label, htmltools::tagList(content))
-      } else {
-        badge_dropdown(id = ns("inputs"), label = badge_label, htmltools::tagList(content))
-      }
-    )
-  } else {
-    if (!any(sapply(htmltools::tags, identical, container))) {
-      stop("Container should be one of `htmltools::tags`")
-    }
-    htmltools::tags$div(container(content))
+  fixed <- all(vapply(picks, is_pick_fixed, logical(1)))
+
+  if (fixed && missing(container)) {
+    container <- "badge_fixed"
   }
+  if (is.character(container)) {
+    container <- get(container, mode = "function")
+  }
+  out <- container(content, id = ns("inputs"), label = badge_label)
+  if (!(methods::is(out, "shiny.tag") || methods::is(out, "shiny.tag.list"))) {
+    stop("`container` should be one of `htmltools::tags` or generate one.")
+  }
+  htmltools::tags$div(out)
 }
 
 #' @rdname picks_module
 #' @export
-picks_srv <- function(id = "", picks, data) {
-  checkmate::assert_string(id)
+picks_srv <- function(id, picks, data) {
   checkmate::assert_class(data, "reactive")
   UseMethod("picks_srv", picks)
 }
 
 #' @rdname picks_module
 #' @export
-picks_srv.list <- function(id, picks, data) {
+picks_srv.list <- function(id = "", picks, data) {
   checkmate::assert_named(picks, type = "unique")
+  checkmate::assert_string(id, null.ok = TRUE)
+  if (identical(trimws(id), "")) {
+    id <- NULL
+  }
+  ns <- shiny::NS(id)
   sapply(
     names(Filter(length, picks)),
     USE.NAMES = TRUE,
-    function(name) picks_srv(name, picks[[name]], data)
+    function(name) picks_srv(ns(name), picks[[name]], data)
   )
 }
 
 #' @rdname picks_module
 #' @export
 picks_srv.picks <- function(id, picks, data) {
+  checkmate::assert_named(picks, type = "unique")
+  checkmate::assert_string(id)
   shiny::moduleServer(id, function(input, output, session) {
     picks_resolved <- shiny::reactiveVal(
       restoreValue(
@@ -198,6 +216,7 @@ picks_srv.picks <- function(id, picks, data) {
             selected, new_selected,
             sprintf("picks_srv@1 %s$%s$selected is outside of the possible choices", id, slot_name)
           )
+
           .update_rv(
             choices, all_choices(),
             sprintf("picks_srv@1 %s$%s$choices is outside of the possible choices", id, slot_name)
