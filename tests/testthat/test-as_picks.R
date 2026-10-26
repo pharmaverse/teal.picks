@@ -159,6 +159,7 @@ describe("tests for teal_transform_filter", {
     expect_error(teal_transform_filter(matrix(), "Assertion"))
   })
 
+  skip_if_not_installed("teal.transform")
   mock_transform_module <- teal_transform_filter(
     teal.transform::data_extract_spec(
       dataname = "iris",
