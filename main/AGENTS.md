@@ -14,18 +14,18 @@ It provides 3 main features to the framework:
 
 - `picks` specification (`R/picks.R`): S3 objects that define `choices`
   and default `selected` for a hierarchy of selections
-  - [`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  - [`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
     is a list of `pick` objects named after their class:
-    [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+    [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
     first, followed by
-    [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+    [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
     and then
-    [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+    [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   - a `pick` is `list(choices, selected)` with `multiple`, `fixed`,
     `ordered` and extra `pickerInput` options stored as attributes
   - `choices`/`selected` could be:
     - eager: `character` names, or plain values for
-      [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+      [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
     - `tidyselect` expressions, quoted with
       [`rlang::enquo()`](https://rlang.r-lib.org/reference/enquo.html);
       integer positions such as the default `selected = 1L` count as
@@ -33,13 +33,13 @@ It provides 3 main features to the framework:
     - predicate functions, e.g. `is.numeric`, applied to each element
       (functions with class `"des-delayed"` are called once with all the
       data); the only delayed form accepted by
-      [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+      [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 - Shiny modules
-  [`picks_ui()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)/[`picks_srv()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+  [`picks_ui()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)/[`picks_srv()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
   render one input per `pick` and return a `reactiveVal`
   (`picks_resolved`) with the resolved `picks`
 - Merging function
-  [`merge_srv()`](https://insightsengineering.github.io/teal.picks/reference/merge_srv.md)
+  [`merge_srv()`](https://pharmaverse.github.io/teal.picks/reference/merge_srv.md)
   merges the selected data into one dataset (`anl` by default) and
   returns the merged `teal_data` and the selected variables
 
@@ -49,45 +49,45 @@ usage.
 
 ### Resolution of `picks`
 
-- [`resolver()`](https://insightsengineering.github.io/teal.picks/reference/resolver.md)
+- [`resolver()`](https://pharmaverse.github.io/teal.picks/reference/resolver.md)
   walks the `picks` in order: the
-  [`determine()`](https://insightsengineering.github.io/teal.picks/reference/determine.md)
+  [`determine()`](https://pharmaverse.github.io/teal.picks/reference/determine.md)
   S3 generic resolves `choices` and then `selected` of each element and
   passes the selected data to the next one (`teal_data` → dataset →
   selected columns).
 - Names given as text are matched against the data and unknown ones are
   dropped silently (a warning appears only if none match):
   `variables(c("AGE", "SEXX"))` offers only `AGE`.
-- [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+- [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   are resolved against the unique values of the selected columns.
 - If an element ends up with nothing selected, every element after it is
   emptied (`choices` and `selected` become `NULL`).
 
 ### Inputs rendered by `picks_ui()`
 
-- [`picks_ui()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+- [`picks_ui()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
   only creates placeholders;
-  [`picks_srv()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+  [`picks_srv()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
   renders the inputs from the resolved `picks`.
 - The
-  [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   input depends on the type of the selected column:
-  [`ranged()`](https://insightsengineering.github.io/teal.picks/reference/ranged.md)
+  [`ranged()`](https://pharmaverse.github.io/teal.picks/reference/ranged.md)
   on a numeric column gives a `numericRangeInput()`, on a
   `Date`/`POSIXct` column a `dateRangeInput()`; anything else
   (character, factor, logical, or numeric without
-  [`ranged()`](https://insightsengineering.github.io/teal.picks/reference/ranged.md))
+  [`ranged()`](https://pharmaverse.github.io/teal.picks/reference/ranged.md))
   gives a `pickerInput()`.
 
 ### Reactive flow in `picks_srv()`
 
 - Changing the dataset resets
-  [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   and
-  [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   to their defaults, and changing the variables resets
-  [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
-  ([`.resolve()`](https://insightsengineering.github.io/teal.picks/reference/dot-resolve.md)).
+  [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
+  ([`.resolve()`](https://pharmaverse.github.io/teal.picks/reference/dot-resolve.md)).
 - Categorical inputs
   ([`shinyWidgets::pickerInput()`](https://dreamrs.github.io/shinyWidgets/reference/pickerInput.html))
   commit only when the drop-down closes (`input$<element>-selected_open`
@@ -98,7 +98,7 @@ usage.
 
 ### Merge code generation
 
-- [`.merge_summary_list()`](https://insightsengineering.github.io/teal.picks/reference/dot-merge_summary_list.md)
+- [`.merge_summary_list()`](https://pharmaverse.github.io/teal.picks/reference/dot-merge_summary_list.md)
   checks the selections and `join_keys`, merges parents first (e.g.,
   `ADSL` before `ADAE`), renames duplicated columns (`AGE_ADAE`) and
   sets the `join_keys` of `anl`.
@@ -107,7 +107,7 @@ usage.
   (keys always kept),
   [`dplyr::filter()`](https://dplyr.tidyverse.org/reference/filter.html)
   only if
-  [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   drop rows, then `join_fun` for each extra dataset, chained with `%>%`.
 
 ### Relationships with other packages
@@ -118,15 +118,15 @@ Direct dependencies:
   - Any issue with `join_keys` should be addressed in `teal.data`.
 - `teal.code`: reproducible code (`eval_code()`, `get_code()`).
 - `teal`:
-  [`tm_merge()`](https://insightsengineering.github.io/teal.picks/reference/tm_merge.md)
+  [`tm_merge()`](https://pharmaverse.github.io/teal.picks/reference/tm_merge.md)
   and
-  [`teal_transform_filter()`](https://insightsengineering.github.io/teal.picks/reference/as.picks.md)
+  [`teal_transform_filter()`](https://pharmaverse.github.io/teal.picks/reference/as.picks.md)
   build
-  [`teal::module()`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html)/[`teal::teal_transform_module()`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_transform_module.html)
+  [`teal::module()`](https://rdrr.io/pkg/teal/man/teal_modules.html)/[`teal::teal_transform_module()`](https://rdrr.io/pkg/teal/man/teal_transform_module.html)
   objects.
 - `tidyselect`: dynamic `choices`/`selected`.
 - `teal.transform` is in `Suggests`;
-  [`as.picks()`](https://insightsengineering.github.io/teal.picks/reference/as.picks.md)
+  [`as.picks()`](https://pharmaverse.github.io/teal.picks/reference/as.picks.md)
   converts `data_extract_spec`/`select_spec`/`filter_spec` to `picks` to
   ease the transition away from `teal.transform`.
 
@@ -134,19 +134,19 @@ Usage in other framework packages:
 
 - Module packages (`teal.modules.general`, `teal.modules.clinical`,
   `teal.modules.gtsummary`, `teal.goshawk`) call
-  [`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
-  [`picks_ui()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md),
-  [`picks_srv()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+  [`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
+  [`picks_ui()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md),
+  [`picks_srv()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
   and
-  [`merge_srv()`](https://insightsengineering.github.io/teal.picks/reference/merge_srv.md)
+  [`merge_srv()`](https://pharmaverse.github.io/teal.picks/reference/merge_srv.md)
   in their modules and the `app_driver_*()` helpers in their
   `shinytest2` tests, so changing these can break them. Open an issue
   before changing argument checks in
-  [`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
-  [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
-  [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
+  [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
+  [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   or
-  [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md).
+  [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md).
   - `teal.modules.general` is migrating from `teal.transform`: the
     `picks` version of each module is in a `tm_*_picks.R` file next to
     the old `data_extract_spec` version.
@@ -156,17 +156,17 @@ Usage in other framework packages:
 Use the exported helpers instead of reading the structure or attributes
 of `picks` directly:
 
-- [`check_picks()`](https://insightsengineering.github.io/teal.picks/reference/assert_picks.md)/[`assert_picks()`](https://insightsengineering.github.io/teal.picks/reference/assert_picks.md):
+- [`check_picks()`](https://pharmaverse.github.io/teal.picks/reference/assert_picks.md)/[`assert_picks()`](https://pharmaverse.github.io/teal.picks/reference/assert_picks.md):
   the object is a `picks` with the required elements (`datasets = TRUE`,
   `variables = TRUE`, `values = TRUE`).
-- [`check_last_level()`](https://insightsengineering.github.io/teal.picks/reference/assert_last_level.md)/[`assert_last_level()`](https://insightsengineering.github.io/teal.picks/reference/assert_last_level.md):
+- [`check_last_level()`](https://pharmaverse.github.io/teal.picks/reference/assert_last_level.md)/[`assert_last_level()`](https://pharmaverse.github.io/teal.picks/reference/assert_last_level.md):
   the last element is of a given class,
   e.g. `assert_last_level(x, "variables")`.
-- [`is_pick_multiple()`](https://insightsengineering.github.io/teal.picks/reference/helper_functions_pick.md),
-  [`is_pick_fixed()`](https://insightsengineering.github.io/teal.picks/reference/helper_functions_pick.md),
-  [`is_pick_ordered()`](https://insightsengineering.github.io/teal.picks/reference/helper_functions_pick.md):
+- [`is_pick_multiple()`](https://pharmaverse.github.io/teal.picks/reference/helper_functions_pick.md),
+  [`is_pick_fixed()`](https://pharmaverse.github.io/teal.picks/reference/helper_functions_pick.md),
+  [`is_pick_ordered()`](https://pharmaverse.github.io/teal.picks/reference/helper_functions_pick.md):
   read `pick` attributes instead of `attr(x, "multiple")`.
-- [`picks_datanames()`](https://insightsengineering.github.io/teal.picks/reference/picks_datanames.md):
+- [`picks_datanames()`](https://pharmaverse.github.io/teal.picks/reference/picks_datanames.md):
   datasets used by a set of `picks`, e.g. for a module’s `datanames`.
 
 ### Testing
@@ -176,15 +176,15 @@ of `picks` directly:
   before checking `picks_resolved()`. The input’s HTML is in
   `session$output[["variables-selected_container"]]$html`.
 - In tests of other features, wrap only the
-  [`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   call in `suppressWarnings(classes = "picks_delayed")`: it warns
   whenever eager choices follow a dynamic element, including the default
   `selected = 1L`.
 - In `shinytest2`, Shiny can’t see badge inputs until the badge is
   opened. Use
-  [`app_driver_get_teal_picks_slot()`](https://insightsengineering.github.io/teal.picks/reference/app_driver_get_teal_picks_slot.md)
+  [`app_driver_get_teal_picks_slot()`](https://pharmaverse.github.io/teal.picks/reference/app_driver_get_teal_picks_slot.md)
   and
-  [`app_driver_set_teal_picks_slot()`](https://insightsengineering.github.io/teal.picks/reference/app_driver_set_teal_picks_slot.md).
+  [`app_driver_set_teal_picks_slot()`](https://pharmaverse.github.io/teal.picks/reference/app_driver_set_teal_picks_slot.md).
 
 ### Debugging tips
 
@@ -302,11 +302,11 @@ Each module should produce one or more Table, Listing, or Graph (TLG):
 - **Reproducibility**: All code being executed to generate TLGs should
   be run using `teal_data` and
   [`within()`](https://rdrr.io/r/base/with.html) /
-  [`teal.code::eval_code()`](https://insightsengineering.github.io/teal.code/latest-tag/reference/eval_code.html)
+  [`teal.code::eval_code()`](https://rdrr.io/pkg/teal.code/man/eval_code.html)
   - At the end of the module this object should be returned to enable
     Reporter and “Show R code” functionalities
 - **User Parameters**: Configurable inputs via
-  [`teal.picks::picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`teal.picks::picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   for flexible data selection
 - **Transformators**: Optional pre-processing functions that derive
   variables and validate data before analysis
@@ -325,11 +325,11 @@ Teal modules follow a specific pattern with UI and server components:
 \
 `  ``shiny``::`[`tagList`](https://rstudio.github.io/htmltools/reference/tagList.html)`(`\
 `    ``# Input controls`\
-`    ``teal.widgets``::`[`standard_layout`](https://insightsengineering.github.io/teal.widgets/latest-tag/reference/standard_layout.html)`(`\
+`    ``teal.widgets``::`[`standard_layout`](https://rdrr.io/pkg/teal.widgets/man/standard_layout.html)`(`\
 `      ``# Output displays`\
-`      output ``=`` ``teal.widgets``::`[`white_small_well`](https://insightsengineering.github.io/teal.widgets/latest-tag/reference/white_small_well.html)`(`\
-`        ``teal``::`[`ui_transform_teal_data`](https://insightsengineering.github.io/teal/latest-tag/reference/module_transform_data.html)`(``"decorator_table"``, ``select_decorators``(``decorators``, ``"plot"``)``)``,`\
-`        ``teal``::`[`ui_transform_teal_data`](https://insightsengineering.github.io/teal/latest-tag/reference/module_transform_data.html)`(``"decorator_table"``, ``select_decorators``(``decorators``, ``"table"``)``)``,`\
+`      output ``=`` ``teal.widgets``::`[`white_small_well`](https://rdrr.io/pkg/teal.widgets/man/white_small_well.html)`(`\
+`        ``teal``::`[`ui_transform_teal_data`](https://rdrr.io/pkg/teal/man/module_transform_data.html)`(``"decorator_table"``, ``select_decorators``(``decorators``, ``"plot"``)``)``,`\
+`        ``teal``::`[`ui_transform_teal_data`](https://rdrr.io/pkg/teal/man/module_transform_data.html)`(``"decorator_table"``, ``select_decorators``(``decorators``, ``"table"``)``)``,`\
 `        ``shiny``::`[`tags`](https://rstudio.github.io/htmltools/reference/builder.html)`$``h4``(``"Results"``)``,`\
 `        ``shiny``::`[`plotOutput`](https://rdrr.io/pkg/shiny/man/plotOutput.html)`(``ns``(``"plot"``)``)``,`\
 `        ``shiny``::`[`tags`](https://rstudio.github.io/htmltools/reference/builder.html)`$``h4``(``"Summary data"``)``,`\
@@ -341,11 +341,11 @@ Teal modules follow a specific pattern with UI and server components:
 `        ``shiny``::`[`tags`](https://rstudio.github.io/htmltools/reference/builder.html)`$``br``(``)``,`\
 `        ``shiny``::`[`tags`](https://rstudio.github.io/htmltools/reference/builder.html)`$``div``(`\
 `          ``shiny``::`[`tags`](https://rstudio.github.io/htmltools/reference/builder.html)`$``strong``(``"Select X-Axis Variable"``)``,`\
-`          ``teal.picks``::`[`picks_ui`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)`(``ns``(``"var_x"``)``, ``var_x``)`\
+`          ``teal.picks``::`[`picks_ui`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)`(``ns``(``"var_x"``)``, ``var_x``)`\
 `        ``)``,`\
 `        ``shiny``::`[`tags`](https://rstudio.github.io/htmltools/reference/builder.html)`$``div``(`\
 `          ``shiny``::`[`tags`](https://rstudio.github.io/htmltools/reference/builder.html)`$``strong``(``"Select Y-Axis Variable"``)``,`\
-`          ``teal.picks``::`[`picks_ui`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)`(``ns``(``"var_y"``)``, ``var_y``)`\
+`          ``teal.picks``::`[`picks_ui`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)`(``ns``(``"var_y"``)``, ``var_y``)`\
 `        ``)`\
 `      ``)`\
 `    ``)`\
@@ -359,8 +359,8 @@ Teal modules follow a specific pattern with UI and server components:
 \
 `  ``select_decorators`` ``<-`` `[`getFromNamespace`](https://rdrr.io/r/utils/getFromNamespace.html)`(``"select_decorators"``, ``"teal"``)`` ``# import from teal internal functions`\
 `  ``shiny``::`[`moduleServer`](https://rdrr.io/pkg/shiny/man/moduleServer.html)`(``id``, ``function``(``input``, ``output``, ``session``)`` ``{`\
-`    ``selectors`` ``<-`` ``teal.picks``::`[`picks_srv`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)`(``"picks"``, picks ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``var_x ``=`` ``var_x``, var_y ``=`` ``var_y``)``, data ``=`` ``data``)`\
-`    ``merged`` ``<-`` ``teal.picks``::`[`merge_srv`](https://insightsengineering.github.io/teal.picks/reference/merge_srv.md)`(`\
+`    ``selectors`` ``<-`` ``teal.picks``::`[`picks_srv`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)`(``"picks"``, picks ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``var_x ``=`` ``var_x``, var_y ``=`` ``var_y``)``, data ``=`` ``data``)`\
+`    ``merged`` ``<-`` ``teal.picks``::`[`merge_srv`](https://pharmaverse.github.io/teal.picks/reference/merge_srv.md)`(`\
 `      ``"merge_picks"``,`\
 `      data ``=`` ``data``,`\
 `      selectors ``=`` ``selectors``,`\
@@ -370,26 +370,26 @@ Teal modules follow a specific pattern with UI and server components:
 `    ``# Data preparation`\
 `    ``validated_q`` ``<-`` ``shiny``::`[`reactive`](https://rdrr.io/pkg/shiny/man/reactive.html)`(``{`\
 `      ``shiny``::`[`validate`](https://rdrr.io/pkg/shiny/man/validate.html)`(`\
-`        ``teal``::`[`need_input`](https://insightsengineering.github.io/teal/latest-tag/reference/validate_input.html)`(`\
+`        ``teal``::`[`need_input`](https://rdrr.io/pkg/teal/man/validate_input.html)`(`\
 `          inputId ``=`` ``"var_x-variables-selected"``,`\
 `          condition ``=`` `[`length`](https://rdrr.io/r/base/length.html)`(``selectors``$``var_x``(``)``$``variables``$``selected``)`` ``>`` ``0``,`\
 `          message ``=`` ``"X-Axis Variable must be selected"`\
 `        ``)``,`\
-`        ``teal``::`[`need_input`](https://insightsengineering.github.io/teal/latest-tag/reference/validate_input.html)`(`\
+`        ``teal``::`[`need_input`](https://rdrr.io/pkg/teal/man/validate_input.html)`(`\
 `          inputId ``=`` ``"var_y-variables-selected"``,`\
 `          condition ``=`` `[`length`](https://rdrr.io/r/base/length.html)`(``selectors``$``var_y``(``)``$``variables``$``selected``)`` ``>`` ``0``,`\
 `          message ``=`` ``"Y-Axis Variable must be selected"`\
 `        ``)`\
 `      ``)`\
 `      ``shiny``::`[`validate`](https://rdrr.io/pkg/shiny/man/validate.html)`(`\
-`        ``teal``::`[`need_input`](https://insightsengineering.github.io/teal/latest-tag/reference/validate_input.html)`(`\
+`        ``teal``::`[`need_input`](https://rdrr.io/pkg/teal/man/validate_input.html)`(`\
 `          inputId ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"var_x-variables-selected"``, ``"var_y-variables-selected"``)``,`\
 `          condition ``=`` ``!`[`any`](https://rdrr.io/r/base/any.html)`(``selectors``$``var_x``(``)``$``variables``$``selected`` `[`%in%`](https://rdrr.io/r/base/match.html)` ``selectors``$``var_y``(``)``$``variables``$``selected``)``,`\
 `          message ``=`` ``"X-axis variable and Y-axis variable must be different"`\
 `        ``)`\
 `      ``)`\
 `      ``q`` ``<-`` ``merged``$``data``(``)`\
-`      ``teal.reporter``::`[`teal_card`](https://insightsengineering.github.io/teal.reporter/latest-tag/reference/teal_card.html)`(``q``)`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``teal.reporter``::`[`teal_card`](https://insightsengineering.github.io/teal.reporter/latest-tag/reference/teal_card.html)`(``q``)``, ``"## Module's output"``)`\
+`      ``teal.reporter``::`[`teal_card`](https://rdrr.io/pkg/teal.reporter/man/teal_card.html)`(``q``)`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``teal.reporter``::`[`teal_card`](https://rdrr.io/pkg/teal.reporter/man/teal_card.html)`(``q``)``, ``"## Module's output"``)`\
 `      ``q`\
 `    ``}``)`\
 \
@@ -400,7 +400,7 @@ Teal modules follow a specific pattern with UI and server components:
 `          ``ggplot2``::`[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``ggplot2``::`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``env_var_x``, y ``=`` ``env_var_y``)``)`\
 `      ``}``, env_var_x ``=`` `[`as.name`](https://rdrr.io/r/base/name.html)`(``merged``$``variables``(``)``$``var_x``)``, env_var_y ``=`` `[`as.name`](https://rdrr.io/r/base/name.html)`(``merged``$``variables``(``)``$``var_y``)``)`\
 `    ``}``)`\
-`    ``decorated_plot`` ``<-`` ``teal``::`[`srv_transform_teal_data`](https://insightsengineering.github.io/teal/latest-tag/reference/module_transform_data.html)`(`\
+`    ``decorated_plot`` ``<-`` ``teal``::`[`srv_transform_teal_data`](https://rdrr.io/pkg/teal/man/module_transform_data.html)`(`\
 `      ``"decorator_table"``,`\
 `      ``qenv_plot``,`\
 `      ``select_decorators``(``decorators``, ``"plot"``)``,`\
@@ -412,7 +412,7 @@ Teal modules follow a specific pattern with UI and server components:
 `        ``table`` ``<-`` ``gtsummary``::`[`tbl_summary`](https://www.danieldsjoberg.com/gtsummary/reference/tbl_summary.html)`(``anl``, by ``=`` ``env_var_x``, missing ``=`` ``"no"``)`\
 `      ``}``, env_var_x ``=`` `[`as.name`](https://rdrr.io/r/base/name.html)`(``merged``$``variables``(``)``$``var_x``)``, env_var_y ``=`` `[`as.name`](https://rdrr.io/r/base/name.html)`(``merged``$``variables``(``)``$``var_y``)``)`\
 `    ``}``)`\
-`    ``decorated_table`` ``<-`` ``teal``::`[`srv_transform_teal_data`](https://insightsengineering.github.io/teal/latest-tag/reference/module_transform_data.html)`(`\
+`    ``decorated_table`` ``<-`` ``teal``::`[`srv_transform_teal_data`](https://rdrr.io/pkg/teal/man/module_transform_data.html)`(`\
 `      ``"decorator_table"``,`\
 `      ``qenv_table``,`\
 `      ``select_decorators``(``decorators``, ``"table"``)``,`\
@@ -430,8 +430,8 @@ Teal modules follow a specific pattern with UI and server components:
 \
 `tm_example_module`` ``<-`` ``function``(`\
 `  ``label`` ``=`` ``"Example Module"``,`\
-`  ``var_x`` ``=`` ``teal.picks``::`[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``teal.picks``::`[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``)``, ``teal.picks``::`[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``is.numeric``, selected ``=`` ``1L``)``)``,`\
-`  ``var_y`` ``=`` ``teal.picks``::`[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``teal.picks``::`[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``)``, ``teal.picks``::`[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``is.numeric``, selected ``=`` ``2L``)``)``,`\
+`  ``var_x`` ``=`` ``teal.picks``::`[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``teal.picks``::`[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``)``, ``teal.picks``::`[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``is.numeric``, selected ``=`` ``1L``)``)``,`\
+`  ``var_y`` ``=`` ``teal.picks``::`[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``teal.picks``::`[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``)``, ``teal.picks``::`[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``is.numeric``, selected ``=`` ``2L``)``)``,`\
 `  ``decorators`` ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``)``,`\
 `  ``transformators`` ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``)`\
 `)`` ``{`\
@@ -440,7 +440,7 @@ Teal modules follow a specific pattern with UI and server components:
 `  ``checkmate``::`[`assert_class`](https://mllg.github.io/checkmate/reference/checkClass.html)`(``var_y``, ``"picks"``)`\
 `  ``checkmate``::`[`assert_list`](https://mllg.github.io/checkmate/reference/checkList.html)`(``transformators``, types ``=`` ``"teal_transform_module"``)`\
 `  ``args`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(``var_x ``=`` ``var_x``, var_y ``=`` ``var_y``, decorators ``=`` ``decorators``)`\
-`  ``teal``::`[`module`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html)`(`\
+`  ``teal``::`[`module`](https://rdrr.io/pkg/teal/man/teal_modules.html)`(`\
 `    label ``=`` ``label``,`\
 `    server ``=`` ``srv_example_module``,`\
 `    ui ``=`` ``ui_example_module``,`\

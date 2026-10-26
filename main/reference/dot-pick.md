@@ -45,11 +45,11 @@ Create a `pick` object
 - ...:
 
   for `picks(...)`: hierarchical structure that contains
-  [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   as first element and optionally
-  [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   and
-  [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 
   for `variables(...)` and `values(...)`: additional arguments delivered
   to `pickerInput`, see
@@ -61,8 +61,8 @@ Create a `pick` object
 ## Value
 
 `pick` generic object that is used by
-[`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
-[`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
+[`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 and
-[`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 to create objects of corresponding classes.

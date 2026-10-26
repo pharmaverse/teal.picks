@@ -6,24 +6,24 @@
 a way that mimicks how people think about data: first *which dataset*,
 then *which columns*, and optionally *which values* to filter to. You
 set all those steps at once with
-[`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md);
+[`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md);
 the app renders the right controls and keeps selections consistent when
 upstream choices change.
 
 Typical workflow:
 
 1.  Prepare a
-    [`teal.data::teal_data()`](https://insightsengineering.github.io/teal.data/latest-tag/reference/teal_data.html)
+    [`teal.data::teal_data()`](https://rdrr.io/pkg/teal.data/man/teal_data.html)
     object (when you relate multiple tables use `join_keys` so teal
     knows how they link).
 2.  Define one or more
-    [`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+    [`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
     specs:
-    [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
+    [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
     optionally
-    [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
+    [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
     optionally
-    [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+    [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
     for filters or ranges.
 3.  In your teal module, wire UI and server so those specs drive your
     tables, plots, or merged analysis data (see [Writing your own
@@ -35,15 +35,15 @@ every level.
 \
 [`library`](https://rdrr.io/r/base/library.html)`(`[`teal`](https://insightsengineering.github.io/teal/)`)`\
 [`library`](https://rdrr.io/r/base/library.html)`(`[`teal.data`](https://insightsengineering.github.io/teal.data/)`)`\
-[`library`](https://rdrr.io/r/base/library.html)`(`[`teal.picks`](https://github.com/insightsengineering/teal.picks/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`teal.picks`](https://github.com/pharmaverse/teal.picks/)`)`\
 \
-`data`` ``<-`` `[`teal_data`](https://insightsengineering.github.io/teal.data/latest-tag/reference/teal_data.html)`(``)`\
+`data`` ``<-`` `[`teal_data`](https://rdrr.io/pkg/teal.data/man/teal_data.html)`(``)`\
 `data`` ``<-`` `[`within`](https://rdrr.io/r/base/with.html)`(``data``, ``{`\
-`  ``ADSL`` ``<-`` ``teal.data``::`[`rADSL`](https://insightsengineering.github.io/teal.data/latest-tag/reference/random_cdisc_data.html)\
-`  ``ADLB`` ``<-`` ``teal.data``::`[`rADLB`](https://insightsengineering.github.io/teal.data/latest-tag/reference/random_cdisc_data.html)\
+`  ``ADSL`` ``<-`` ``teal.data``::`[`rADSL`](https://rdrr.io/pkg/teal.data/man/random_cdisc_data.html)\
+`  ``ADLB`` ``<-`` ``teal.data``::`[`rADLB`](https://rdrr.io/pkg/teal.data/man/random_cdisc_data.html)\
 `}``)`\
 \
-[`join_keys`](https://insightsengineering.github.io/teal.data/latest-tag/reference/join_keys.html)`(``data``)`` ``<-`` ``teal.data``::`[`default_cdisc_join_keys`](https://insightsengineering.github.io/teal.data/latest-tag/reference/default_cdisc_join_keys.html)`[`[`c`](https://rdrr.io/r/base/c.html)`(``"ADSL"``, ``"ADLB"``)``]`
+[`join_keys`](https://rdrr.io/pkg/teal.data/man/join_keys.html)`(``data``)`` ``<-`` ``teal.data``::`[`default_cdisc_join_keys`](https://rdrr.io/pkg/teal.data/man/default_cdisc_join_keys.html)`[`[`c`](https://rdrr.io/r/base/c.html)`(``"ADSL"``, ``"ADLB"``)``]`
 
 ### Choose a dataset
 
@@ -52,8 +52,8 @@ the active source (here, demographics vs labs).
 
 \
 `picks_datasets`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`\
-`  source ``=`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`    `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`  source ``=`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`    `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `      choices ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"ADSL"``, ``"ADLB"``)``,`\
 `      selected ``=`` ``"ADLB"`\
 `    ``)`\
@@ -63,17 +63,17 @@ the active source (here, demographics vs labs).
 ### Choose dataset and columns
 
 Add
-[`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 so, after a dataset is chosen, the user picks one or more columns. You
 can list names explicitly or use tidyselect-style expressions; see
-[`?picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`?picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 for details.
 
 \
 `picks_datasets_variables`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`\
-`  adsl_cols ``=`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`    `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
-`    `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`  adsl_cols ``=`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`    `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
+`    `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `      choices ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"USUBJID"``, ``"AGE"``, ``"SEX"``)``,`\
 `      selected ``=`` ``"AGE"``,`\
 `      multiple ``=`` ``FALSE`\
@@ -83,18 +83,18 @@ for details.
 
 ### Add a value filter (levels or ranges)
 
-[`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 sits after
-[`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md).
+[`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md).
 It adapts to the column type—for example category levels for a
 `PARAM`-style variable, or a numeric or date range for continuous data.
 
 \
 `picks_datasets_variables_values`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`\
-`  labs ``=`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`    `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADLB"``, selected ``=`` ``"ADLB"``)``,`\
-`    `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"PARAM"``, selected ``=`` ``"PARAM"``, multiple ``=`` ``FALSE``)``,`\
-`    `[`values`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`  labs ``=`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`    `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADLB"``, selected ``=`` ``"ADLB"``)``,`\
+`    `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"PARAM"``, selected ``=`` ``"PARAM"``, multiple ``=`` ``FALSE``)``,`\
+`    `[`values`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `      choices ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"ALT"``, ``"AST"``, ``"CRP"``, ``"GLU"``)``,`\
 `      selected ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"ALT"``, ``"AST"``)``,`\
 `      multiple ``=`` ``TRUE`\
@@ -105,15 +105,15 @@ It adapts to the column type—for example category levels for a
 ### Define choices and selections
 
 Each
-[`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 element has `choices` and `selected`. You can define them in four ways:
 
 | Approach | Works with |
 |----|----|
-| Default behavior - no arguments needed for generic usage | [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md), [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md), [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md) |
-| Static — character vector, integer index, or numeric range | [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md), [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md), [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md) |
-| `tidyselect` helpers — `everything()`, `starts_with()`, `where()`, … | [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md), [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md) only |
-| Function — an R function applied at runtime to the data | [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md), [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md), [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md) |
+| Default behavior - no arguments needed for generic usage | [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md), [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md), [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md) |
+| Static — character vector, integer index, or numeric range | [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md), [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md), [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md) |
+| `tidyselect` helpers — `everything()`, `starts_with()`, `where()`, … | [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md), [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md) only |
+| Function — an R function applied at runtime to the data | [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md), [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md), [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md) |
 
 The sections below walk through each approach with runnable examples.
 
@@ -122,25 +122,25 @@ The sections below walk through each approach with runnable examples.
 Defaults depend on the slot type.
 
 - For
-  [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
+  [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
   the default `choices` are all available datasets. A
-  [`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   call needs a
-  [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   as first positional argument, except when `check_no_dataset = FALSE`.
 - For
-  [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
+  [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
   the default `choices` is all variables in the selected dataset.
 - For
-  [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
+  [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
   the default `choices` is all values of the selected variable.
 - For `selected`, the default is the first available choice, or all
   choices when `multiple = TRUE`.
 
 \
-[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
-`  `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``)`\
+[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
+`  `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``)`\
 `)`
 
       [1m<picks> [0m
@@ -154,10 +154,10 @@ Defaults depend on the slot type.
           [3mmultiple=FALSE, ordered=FALSE, fixed=FALSE, allow-clear=FALSE [0m
 
 \
-[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
-`  `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"SEX"``, selected ``=`` ``"SEX"``, multiple ``=`` ``FALSE``)``,`\
-`  `[`values`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``)`\
+[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
+`  `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"SEX"``, selected ``=`` ``"SEX"``, multiple ``=`` ``FALSE``)``,`\
+`  `[`values`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``)`\
 `)`
 
       [1m<picks> [0m
@@ -182,17 +182,17 @@ Pass a character vector to `choices` to enumerate options exactly. Use
 
 \
 `# Datasets — user may switch between ADSL and ADLB; ADSL is the default`\
-`p_datasets`` ``<-`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`p_datasets`` ``<-`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `    choices  ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"ADSL"``, ``"ADLB"``)``,`\
 `    selected ``=`` ``"ADSL"`\
 `  ``)`\
 `)`\
 \
 `# Variables — only a named subset is offered; first column pre-selected`\
-`p_variables`` ``<-`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
-`  `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`p_variables`` ``<-`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
+`  `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `    choices  ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"AGE"``, ``"SEX"``, ``"ARM"``)``,`\
 `    selected ``=`` ``"AGE"``,`\
 `    multiple ``=`` ``FALSE`\
@@ -200,10 +200,10 @@ Pass a character vector to `choices` to enumerate options exactly. Use
 `)`\
 \
 `# Values — categorical filter; two levels pre-selected`\
-`p_values`` ``<-`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
-`  `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"SEX"``, selected ``=`` ``"SEX"``, multiple ``=`` ``FALSE``)``,`\
-`  `[`values`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`p_values`` ``<-`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
+`  `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"SEX"``, selected ``=`` ``"SEX"``, multiple ``=`` ``FALSE``)``,`\
+`  `[`values`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `    choices  ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"M"``, ``"F"``)``,`\
 `    selected ``=`` ``"F"`\
 `  ``)`\
@@ -251,9 +251,9 @@ Pass a character vector to `choices` to enumerate options exactly. Use
 
 `tidyselect` predicates let `choices` and `selected` adapt to the actual
 data at runtime instead of being hard-coded. This is supported for
-[`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 and
-[`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md).
+[`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md).
 
 Commonly used helpers:
 
@@ -276,23 +276,23 @@ Commonly used helpers:
 - Integer indices such as `1L`, `1L:3L` — select by position
 
 > Note: `tidyselect` is not supported by
-> [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md).
+> [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md).
 > Use explicit vectors or a function there instead (see
 > [Functions](#functions)).
 
 \
 `# Datasets — offer any data.frame in the teal_data object`\
-`p_any_dataset`` ``<-`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`p_any_dataset`` ``<-`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `    choices  ``=`` ``tidyselect``::`[`where`](https://tidyselect.r-lib.org/reference/where.html)`(``is.data.frame``)``,`\
 `    selected ``=`` ``1L`` ``# first dataset by default`\
 `  ``)`\
 `)`\
 \
 `# Variables — all numeric columns; first one pre-selected`\
-`p_numeric_vars`` ``<-`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
-`  `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`p_numeric_vars`` ``<-`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
+`  `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `    choices  ``=`` ``tidyselect``::`[`where`](https://tidyselect.r-lib.org/reference/where.html)`(``is.numeric``)``,`\
 `    selected ``=`` ``1L``,`\
 `    multiple ``=`` ``FALSE`\
@@ -300,9 +300,9 @@ Commonly used helpers:
 `)`\
 \
 `# Variables — columns whose names start with "A"; first two pre-selected`\
-`p_a_prefix`` ``<-`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
-`  `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`p_a_prefix`` ``<-`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
+`  `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `    choices  ``=`` ``tidyselect``::`[`starts_with`](https://tidyselect.r-lib.org/reference/starts_with.html)`(``"A"``)``,`\
 `    selected ``=`` ``1L``:``2L``,`\
 `    multiple ``=`` ``TRUE`\
@@ -347,23 +347,23 @@ Commonly used helpers:
 
 You can pass a plain R function as `choices` or `selected`. The function
 receives the relevant context object (the current dataset for
-[`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 and
-[`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
+[`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
 the current column vector for
-[`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md))
+[`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md))
 and must return the subset to use. This is the only runtime-dynamic
 approach supported by
-[`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md).
+[`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md).
 
 \
 `# Variables — use the package helper is_categorical() as a column predicate.`\
 `# Without "des-delayed", the resolver calls it via vapply(data, fn, logical(1)),`\
 `# so it must accept one column and return a single logical value — which is_categorical() does.`\
-[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
-`  `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`    choices  ``=`` `[`is_categorical`](https://insightsengineering.github.io/teal.picks/reference/tidyselectors.md)`(``)``,`\
+[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
+`  `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`    choices  ``=`` `[`is_categorical`](https://pharmaverse.github.io/teal.picks/reference/tidyselectors.md)`(``)``,`\
 `    selected ``=`` ``1L``,`\
 `    multiple ``=`` ``TRUE`\
 `  ``)`\
@@ -386,10 +386,10 @@ approach supported by
 `even_vals`` ``<-`` ``function``(``x``)`` `[`sort`](https://rdrr.io/r/base/sort.html)`(`[`unique`](https://rdrr.io/r/base/unique.html)`(``x``[``x`` `[`%%`](https://rdrr.io/r/base/Arithmetic.html)` ``2`` ``==`` ``0``]``)``)`\
 [`class`](https://rdrr.io/r/base/class.html)`(``even_vals``)`` ``<-`` `[`append`](https://rdrr.io/r/base/append.html)`(`[`class`](https://rdrr.io/r/base/class.html)`(``even_vals``)``, ``"des-delayed"``)`\
 \
-`p_even_ages`` ``<-`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
-`  `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"AGE"``, selected ``=`` ``"AGE"``, multiple ``=`` ``FALSE``)``,`\
-`  `[`values`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`p_even_ages`` ``<-`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
+`  `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"AGE"``, selected ``=`` ``"AGE"``, multiple ``=`` ``FALSE``)``,`\
+`  `[`values`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `    choices  ``=`` ``even_vals``,`\
 `    selected ``=`` ``even_vals`\
 `  ``)`\
@@ -418,9 +418,9 @@ into the next step (for example stratifiers or outcomes together).
 
 \
 `picks_multiple_variables`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`\
-`  demo ``=`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`    `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
-`    `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`  demo ``=`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`    `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` ``"ADSL"``, selected ``=`` ``"ADSL"``)``,`\
+`    `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `      choices ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"USUBJID"``, ``"AGE"``, ``"SEX"``)``,`\
 `      selected ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"AGE"``, ``"SEX"``)``,`\
 `      multiple ``=`` ``TRUE``,`\
@@ -430,7 +430,7 @@ into the next step (for example stratifiers or outcomes together).
 `)`
 
 See
-[`?picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`?picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 for other arguments that affect how choices/selections are presented to
 users regardless of using static, tidyselect or functions to define
 them.
@@ -439,27 +439,27 @@ them.
 
 |  | Static | `tidyselect` | Function |
 |----|:--:|:--:|:--:|
-| [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md) | yes | yes | yes |
-| [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md) | yes | yes | yes |
-| [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md) | yes | **no** | yes |
+| [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md) | yes | yes | yes |
+| [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md) | yes | yes | yes |
+| [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md) | yes | **no** | yes |
 
 Use **static** choices when the set of options is fixed and known at
 app-development time. Use **`tidyselect`** when you want the choices to
 adapt to the shape of the data without writing a custom function. Use
 **functions** when the logic is more involved, or when you need runtime
 behavior for
-[`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md).
+[`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md).
 
 ## Trying these patterns inside teal
 
 You can paste the `picks` objects above into any module that consumes
 them. To quickly explore picks object(s) in teal apps, the package
 includes
-[`tm_merge()`](https://insightsengineering.github.io/teal.picks/reference/tm_merge.md):
+[`tm_merge()`](https://pharmaverse.github.io/teal.picks/reference/tm_merge.md):
 a small example teal module that connects `picks` to a merged preview
 table. That is not required for normal use—it is simply a convenient
 host while you learn the
-[`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 API.
 
 Run the next block to explore a teal app with different picks patterns
@@ -467,24 +467,24 @@ Run the next block to explore a teal app with different picks patterns
 \
 [`library`](https://rdrr.io/r/base/library.html)`(`[`shiny`](https://shiny.posit.co/)`)`\
 \
-`app`` ``<-`` `[`init`](https://insightsengineering.github.io/teal/latest-tag/reference/init.html)`(`\
+`app`` ``<-`` `[`init`](https://rdrr.io/pkg/teal/man/init.html)`(`\
 `  data ``=`` ``data``,`\
-`  modules ``=`` `[`modules`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html)`(`\
-`    `[`modules`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html)`(`\
+`  modules ``=`` `[`modules`](https://rdrr.io/pkg/teal/man/teal_modules.html)`(`\
+`    `[`modules`](https://rdrr.io/pkg/teal/man/teal_modules.html)`(`\
 `      label ``=`` ``"teal.picks patterns"``,`\
-`      `[`tm_merge`](https://insightsengineering.github.io/teal.picks/reference/tm_merge.md)`(`\
+`      `[`tm_merge`](https://pharmaverse.github.io/teal.picks/reference/tm_merge.md)`(`\
 `        label ``=`` ``"1. Dataset choice"``,`\
 `        picks ``=`` ``picks_datasets`\
 `      ``)``,`\
-`      `[`tm_merge`](https://insightsengineering.github.io/teal.picks/reference/tm_merge.md)`(`\
+`      `[`tm_merge`](https://pharmaverse.github.io/teal.picks/reference/tm_merge.md)`(`\
 `        label ``=`` ``"2. Dataset & variables"``,`\
 `        picks ``=`` ``picks_datasets_variables`\
 `      ``)``,`\
-`      `[`tm_merge`](https://insightsengineering.github.io/teal.picks/reference/tm_merge.md)`(`\
+`      `[`tm_merge`](https://pharmaverse.github.io/teal.picks/reference/tm_merge.md)`(`\
 `        label ``=`` ``"3. Dataset, variables & values"``,`\
 `        picks ``=`` ``picks_datasets_variables_values`\
 `      ``)``,`\
-`      `[`tm_merge`](https://insightsengineering.github.io/teal.picks/reference/tm_merge.md)`(`\
+`      `[`tm_merge`](https://pharmaverse.github.io/teal.picks/reference/tm_merge.md)`(`\
 `        label ``=`` ``"4. Multiple variables"``,`\
 `        picks ``=`` ``picks_multiple_variables`\
 `      ``)`\
@@ -499,24 +499,24 @@ Run the next block to explore a teal app with different picks patterns
 ## Writing your own module
 
 In real apps you usually integrate `picks` with your own
-[`teal::module()`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html).
-Two functions do the wiring:
+[`teal::module()`](https://rdrr.io/pkg/teal/man/teal_modules.html). Two
+functions do the wiring:
 
-- [`picks_ui()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+- [`picks_ui()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
   — place the selector controls in your picks object in your module UI
-- [`picks_srv()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+- [`picks_srv()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
   — in the module server, pass `data` as a reactive `teal_data` object;
   it returns the resolved picks (what the user chose, after any dynamic
   choices are applied).
 
 \
 `tm_picks_preview`` ``<-`` ``function``(``label`` ``=`` ``"Custom picks module"``, ``picks``)`` ``{`\
-`  ``teal``::`[`module`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html)`(`\
+`  ``teal``::`[`module`](https://rdrr.io/pkg/teal/man/teal_modules.html)`(`\
 `    label ``=`` ``label``,`\
 `    ui ``=`` ``function``(``id``, ``picks``)`` ``{`\
 `      ``ns`` ``<-`` ``shiny``::`[`NS`](https://rdrr.io/pkg/shiny/man/NS.html)`(``id``)`\
 `      ``shiny``::`[`tagList`](https://rstudio.github.io/htmltools/reference/tagList.html)`(`\
-`        ``teal.picks``::`[`picks_ui`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)`(``ns``(``"sel"``)``, picks ``=`` ``picks``)``,`\
+`        ``teal.picks``::`[`picks_ui`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)`(``ns``(``"sel"``)``, picks ``=`` ``picks``)``,`\
 `        ``shiny``::`[`tags`](https://rstudio.github.io/htmltools/reference/builder.html)`$``h5``(``"Preview (first rows)"``)``,`\
 `        ``shiny``::`[`tableOutput`](https://rdrr.io/pkg/shiny/man/renderTable.html)`(``ns``(``"preview"``)``)``,`\
 `        ``shiny``::`[`tags`](https://rstudio.github.io/htmltools/reference/builder.html)`$``h5``(``"Resolved picks"``)``,`\
@@ -525,7 +525,7 @@ Two functions do the wiring:
 `    ``}``,`\
 `    server ``=`` ``function``(``id``, ``data``, ``picks``)`` ``{`\
 `      ``shiny``::`[`moduleServer`](https://rdrr.io/pkg/shiny/man/moduleServer.html)`(``id``, ``function``(``input``, ``output``, ``session``)`` ``{`\
-`        ``resolved`` ``<-`` ``teal.picks``::`[`picks_srv`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)`(``"sel"``, picks ``=`` ``picks``, data ``=`` ``data``)`\
+`        ``resolved`` ``<-`` ``teal.picks``::`[`picks_srv`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)`(``"sel"``, picks ``=`` ``picks``, data ``=`` ``data``)`\
 `        ``preview_tbl`` ``<-`` ``shiny``::`[`reactive`](https://rdrr.io/pkg/shiny/man/reactive.html)`(``{`\
 `          ``shiny``::`[`req`](https://rdrr.io/pkg/shiny/man/req.html)`(`[`data`](https://rdrr.io/r/utils/data.html)`(``)``, ``resolved``(``)``)`\
 `          ``ds`` ``<-`` ``resolved``(``)``$``datasets``$``selected`\
@@ -548,9 +548,9 @@ Two functions do the wiring:
 `  ``)`\
 `}`\
 \
-`app`` ``<-`` `[`init`](https://insightsengineering.github.io/teal/latest-tag/reference/init.html)`(`\
+`app`` ``<-`` `[`init`](https://rdrr.io/pkg/teal/man/init.html)`(`\
 `  data ``=`` ``data``,`\
-`  modules ``=`` `[`modules`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html)`(`\
+`  modules ``=`` `[`modules`](https://rdrr.io/pkg/teal/man/teal_modules.html)`(`\
 `    ``tm_picks_preview``(`\
 `      label ``=`` ``"Custom picks module"``,`\
 `      picks ``=`` ``picks_datasets_variables``$``adsl_cols`\
@@ -563,30 +563,29 @@ Two functions do the wiring:
 `}`
 
 See
-[`?picks_ui`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+[`?picks_ui`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
 and
-[`?picks_srv`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+[`?picks_srv`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
 for container options and multiple named selectors.
 
 ## See also
 
-- [`?picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+- [`?picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   — full
-  [`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   /
-  [`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   /
-  [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   reference.
-- [`vignette("teal-picks-standalone-shiny", package = "teal.picks")`](https://insightsengineering.github.io/teal.picks/articles/teal-picks-standalone-shiny.md)
+- [`vignette("teal-picks-standalone-shiny", package = "teal.picks")`](https://pharmaverse.github.io/teal.picks/articles/teal-picks-standalone-shiny.md)
   —
-  [`picks_ui()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+  [`picks_ui()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
   /
-  [`picks_srv()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+  [`picks_srv()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
   in plain Shiny (no
-  [`init()`](https://insightsengineering.github.io/teal/latest-tag/reference/init.html)).
+  [`init()`](https://rdrr.io/pkg/teal/man/init.html)).
 - `teal` documentation for
-  [`init()`](https://insightsengineering.github.io/teal/latest-tag/reference/init.html),
-  [`modules()`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html),
-  and
-  [`teal::module()`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html).
+  [`init()`](https://rdrr.io/pkg/teal/man/init.html),
+  [`modules()`](https://rdrr.io/pkg/teal/man/teal_modules.html), and
+  [`teal::module()`](https://rdrr.io/pkg/teal/man/teal_modules.html).

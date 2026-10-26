@@ -10,39 +10,38 @@ Downloads](http://cranlogs.r-pkg.org/badges/last-month/teal.picks?color=green)](
 Downloads](http://cranlogs.r-pkg.org/badges/last-week/teal.picks?color=green)](https://cran.r-project.org/package=teal.picks)
 
 [![Check
-🛠](https://github.com/insightsengineering/teal.picks/actions/workflows/check.yaml/badge.svg)](https://insightsengineering.github.io/teal.picks/main/unit-test-report/)
+🛠](https://github.com/pharmaverse/teal.picks/actions/workflows/check.yaml/badge.svg)](https://pharmaverse.github.io/teal.picks/main/unit-test-report/)
 [![Docs
-📚](https://github.com/insightsengineering/teal.picks/actions/workflows/docs.yaml/badge.svg)](https://insightsengineering.github.io/teal.picks/)
+📚](https://github.com/pharmaverse/teal.picks/actions/workflows/docs.yaml/badge.svg)](https://pharmaverse.github.io/teal.picks/)
 [![Code Coverage
-📔](https://raw.githubusercontent.com/insightsengineering/teal.picks/_xml_coverage_reports/data/main/badge.svg)](https://insightsengineering.github.io/teal.picks/main/coverage-report/)
+📔](https://raw.githubusercontent.com/pharmaverse/teal.picks/_xml_coverage_reports/data/main/badge.svg)](https://pharmaverse.github.io/teal.picks/main/coverage-report/)
 
 ![GitHub
-forks](https://img.shields.io/github/forks/insightsengineering/teal.picks?style=social)![GitHub
+forks](https://img.shields.io/github/forks/pharmaverse/teal.picks?style=social)![GitHub
 repo
-stars](https://img.shields.io/github/stars/insightsengineering/teal.picks?style=social)
+stars](https://img.shields.io/github/stars/pharmaverse/teal.picks?style=social)
 
 ![GitHub commit
-activity](https://img.shields.io/github/commit-activity/m/insightsengineering/teal.picks)![GitHub
-contributors](https://img.shields.io/github/contributors/insightsengineering/teal.picks)![GitHub
+activity](https://img.shields.io/github/commit-activity/m/pharmaverse/teal.picks)![GitHub
+contributors](https://img.shields.io/github/contributors/pharmaverse/teal.picks)![GitHub
 last
-commit](https://img.shields.io/github/last-commit/insightsengineering/teal.picks)![GitHub
+commit](https://img.shields.io/github/last-commit/pharmaverse/teal.picks)![GitHub
 pull
-requests](https://img.shields.io/github/issues-pr/insightsengineering/teal.picks)![GitHub
+requests](https://img.shields.io/github/issues-pr/pharmaverse/teal.picks)![GitHub
 repo
-size](https://img.shields.io/github/repo-size/insightsengineering/teal.picks)![GitHub
+size](https://img.shields.io/github/repo-size/pharmaverse/teal.picks)![GitHub
 language
-count](https://img.shields.io/github/languages/count/insightsengineering/teal.picks)[![Project
+count](https://img.shields.io/github/languages/count/pharmaverse/teal.picks)[![Project
 Status: Active – The project has reached a stable, usable state and is
 being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Current
-Version](https://img.shields.io/github/r-package/v/insightsengineering/teal.picks/main?color=purple&label=package%20version)](https://github.com/insightsengineering/teal.picks/tree/main)
+Version](https://img.shields.io/github/r-package/v/pharmaverse/teal.picks/main?color=purple&label=package%20version)](https://github.com/pharmaverse/teal.picks/tree/main)
 [![Open
-Issues](https://img.shields.io/github/issues-raw/insightsengineering/teal.picks?color=red&label=open%20issues)](https://github.com/insightsengineering/teal.picks/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+Issues](https://img.shields.io/github/issues-raw/pharmaverse/teal.picks?color=red&label=open%20issues)](https://github.com/pharmaverse/teal.picks/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 
 `teal.picks` is an `R` package used in the development of
-[`teal`](https://insightsengineering.github.io/teal/) applications. It
-provides:
+[`teal`](https://pharmaverse.github.io/teal/) applications. It provides:
 
 - a hierarchical **choices / selected** model for datasets, variables,
   and values in a Shiny session, with optional **tidyselect** support
@@ -63,25 +62,25 @@ Alternatively, you might want to use the development version.
 
 \
 `# install.packages("pak")`\
-`pak``::`[`pak`](https://pak.r-lib.org/reference/pak.html)`(``"insightsengineering/teal.picks"``)`
+`pak``::`[`pak`](https://pak.r-lib.org/reference/pak.html)`(``"pharmaverse/teal.picks"``)`
 
 ## Usage
 
 See the [package
-reference](https://insightsengineering.github.io/teal.picks/latest-tag/reference/index.html)
+reference](https://pharmaverse.github.io/teal.picks/latest-tag/reference/index.html)
 for full documentation.
 
 Below is a minimal illustration of defining a `picks` specification
 (datasets, then variables; optional
-[`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 when needed):
 
 \
-[`library`](https://rdrr.io/r/base/library.html)`(`[`teal.picks`](https://github.com/insightsengineering/teal.picks/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`teal.picks`](https://github.com/pharmaverse/teal.picks/)`)`\
 \
-`my_picks`` ``<-`` `[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
-`  `[`datasets`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(``choices ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"iris"``, ``"mtcars"``)``)``,`\
-`  `[`variables`](https://insightsengineering.github.io/teal.picks/reference/picks.md)`(`\
+`my_picks`` ``<-`` `[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
+`  `[`datasets`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(``choices ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"iris"``, ``"mtcars"``)``)``,`\
+`  `[`variables`](https://pharmaverse.github.io/teal.picks/reference/picks.md)`(`\
 `    choices ``=`` ``tidyselect``::`[`everything`](https://tidyselect.r-lib.org/reference/everything.html)`(``)``,`\
 `    selected ``=`` ``1L``,`\
 `    multiple ``=`` ``TRUE`\
@@ -90,8 +89,8 @@ when needed):
 
 Wire `my_picks` into `picks_ui` / `picks_srv` with a reactive
 `teal_data` object, or use `tm_merge` inside a
-[`teal::init()`](https://insightsengineering.github.io/teal/latest-tag/reference/init.html)
-application. Full patterns are documented on the package site.
+[`teal::init()`](https://rdrr.io/pkg/teal/man/init.html) application.
+Full patterns are documented on the package site.
 
 ## Getting help
 

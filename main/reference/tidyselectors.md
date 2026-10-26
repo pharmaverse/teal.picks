@@ -22,9 +22,9 @@ is_categorical(min.len, max.len)
 ## Value
 
 A `tidyselector` that can be used directly in `choices` or `selected` of
-[`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 in
-[`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md).
+[`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md).
 
 ## Examples
 

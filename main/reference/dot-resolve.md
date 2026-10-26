@@ -27,7 +27,7 @@
 - selected:
 
   (`vector`) rather `character`, or `factor`. `numeric(2)` for
-  [`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   based on numeric column.
 
 - slot_name:

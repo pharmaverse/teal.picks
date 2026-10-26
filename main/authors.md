@@ -21,17 +21,17 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/insightsengineering/teal.picks/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/pharmaverse/teal.picks/blob/main/DESCRIPTION)
 
 Kaledkowski D, Verissimo A, Kosinski M, Revilla Sancho L, Senan O
 (2026). *teal.picks: Dataset and Variable Picker and Merge Module for
-'teal' Applications*. R package version 0.3.1.9001,
-<https://github.com/insightsengineering/teal.picks/>.
+'teal' Applications*. R package version 0.3.1.9002,
+<https://github.com/pharmaverse/teal.picks/>.
 
 @Manual{,\
   title = {teal.picks: Dataset and Variable Picker and Merge Module for 'teal' Applications},\
   author = {Dawid Kaledkowski and Andre Verissimo and Marcin Kosinski and Lluís {Revilla Sancho} and Oriol Senan},\
   year = {2026},\
-  note = {R package version 0.3.1.9001},\
-  url = {https://github.com/insightsengineering/teal.picks/},\
+  note = {R package version 0.3.1.9002},\
+  url = {https://github.com/pharmaverse/teal.picks/},\
 }

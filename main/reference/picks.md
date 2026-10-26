@@ -6,7 +6,7 @@ selected by app-user during Shiny session. Functions are based on the
 idea of `choices/selected` where app-developer provides `choices` and
 what is `selected` by default. App-user changes `selected` interactively
 (see
-[`picks_module`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)).
+[`picks_module`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)).
 
 ## Usage
 

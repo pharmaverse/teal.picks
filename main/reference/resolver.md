@@ -12,12 +12,12 @@ resolver(x, data)
 
 - x:
 
-  ([`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md))
+  ([`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md))
   settings for picks.
 
 - data:
 
-  ([`teal_data()`](https://insightsengineering.github.io/teal.data/latest-tag/reference/teal_data.html)
+  ([`teal_data()`](https://rdrr.io/pkg/teal.data/man/teal_data.html)
   `environment` or `list`) any data collection supporting object
   extraction with `[[`. Used to determine values of unresolved `picks`.
 

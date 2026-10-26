@@ -3,7 +3,7 @@
 **\[experimental\]** Helper functions to ease transition between
 [`teal.transform::data_extract_spec()`](https://insightsengineering.github.io/teal.transform/latest-tag/reference/data_extract_spec.html)
 and
-[`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md).
+[`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md).
 
 ## Usage
 
@@ -19,7 +19,7 @@ teal_transform_filter(x, label = "Filter")
 
   (`data_extract_spec`, `select_spec`, `filter_spec`) object to convert
   to
-  [`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 
 - quiet:
 
@@ -38,7 +38,7 @@ warning (if `quiet = FALSE`).
 ## Details
 
 With introduction of
-[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
+[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
 [`data_extract_spec`](https://insightsengineering.github.io/teal.transform/latest-tag/reference/data_extract_spec.html)
 will no longer serve a primary tool to define variable choices and
 default selection in teal-modules and eventually
@@ -47,13 +47,13 @@ will be deprecated. To ease the transition to the new tool, we provide
 `as.picks` method which can handle 1:1 conversion from
 [`data_extract_spec`](https://insightsengineering.github.io/teal.transform/latest-tag/reference/data_extract_spec.html)
 to
-[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md).
+[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md).
 Unfortunately, when
 [`data_extract_spec`](https://insightsengineering.github.io/teal.transform/latest-tag/reference/data_extract_spec.html)
 contains
 [`filter_spec`](https://insightsengineering.github.io/teal.transform/latest-tag/reference/filter_spec.html)
 then `as.picks` is unable to provide reliable
-[`picks`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`picks`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 equivalent.
 
 ## Examples
@@ -61,64 +61,49 @@ equivalent.
 ``` r
 
 # convert des with eager select_spec
-as.picks(
-  teal.transform::data_extract_spec(
-    dataname = "iris",
-    teal.transform::select_spec(
-      choices = c("Sepal.Length", "Sepal.Width", "Species"),
-      selected = c("Sepal.Length", "Species"),
-      multiple = TRUE,
-      ordered = TRUE
+
+if (requireNamespace("teal.transform", quietly = TRUE)) {
+  as.picks(
+    teal.transform::data_extract_spec(
+      dataname = "iris",
+      teal.transform::select_spec(
+        choices = c("Sepal.Length", "Sepal.Width", "Species"),
+        selected = c("Sepal.Length", "Species"),
+        multiple = TRUE,
+        ordered = TRUE
+      )
     )
   )
-)
+
+  # convert des with delayed select_spec
+  as.picks(
+    teal.transform::data_extract_spec(
+      dataname = "iris",
+      teal.transform::select_spec(
+        choices = teal.transform::variable_choices("iris"),
+        selected = teal.transform::first_choice(),
+        multiple = TRUE,
+        ordered = TRUE
+      )
+    )
+  )
+
+  as.picks(
+    teal.transform::data_extract_spec(
+      dataname = "iris",
+      teal.transform::select_spec(
+        choices = teal.transform::variable_choices(
+          "iris",
+          subset = function(data) names(Filter(is.numeric, data))
+        ),
+        selected = teal.transform::first_choice(),
+        multiple = TRUE,
+        ordered = TRUE
+      )
+    )
+  )
+}
 #> Warning: variables has eager choices (character) while datasets has dynamic choices. It is not guaranteed that explicitly defined choices will be a subset of data selected in a previous element.
-#>  <picks>
-#>    <datasets>:
-#>      choices: iris
-#>      selected: 1L
-#>      multiple=FALSE, ordered=FALSE, fixed=TRUE
-#>    <variables>:
-#>      choices: Sepal.Length, Sepal.Width, Species
-#>      selected: Sepal.Length, Species
-#>      multiple=TRUE, ordered=TRUE, fixed=FALSE, allow-clear=TRUE
-
-# convert des with delayed select_spec
-as.picks(
-  teal.transform::data_extract_spec(
-    dataname = "iris",
-    teal.transform::select_spec(
-      choices = teal.transform::variable_choices("iris"),
-      selected = teal.transform::first_choice(),
-      multiple = TRUE,
-      ordered = TRUE
-    )
-  )
-)
-#>  <picks>
-#>    <datasets>:
-#>      choices: iris
-#>      selected: 1L
-#>      multiple=FALSE, ordered=FALSE, fixed=TRUE
-#>    <variables>:
-#>      choices: <fn>
-#>      selected: 1L
-#>      multiple=TRUE, ordered=TRUE, fixed=FALSE, allow-clear=FALSE
-
-as.picks(
-  teal.transform::data_extract_spec(
-    dataname = "iris",
-    teal.transform::select_spec(
-      choices = teal.transform::variable_choices(
-        "iris",
-        subset = function(data) names(Filter(is.numeric, data))
-      ),
-      selected = teal.transform::first_choice(),
-      multiple = TRUE,
-      ordered = TRUE
-    )
-  )
-)
 #>  <picks>
 #>    <datasets>:
 #>      choices: iris
@@ -146,7 +131,7 @@ teal_transform_filter(
 #>         ns <- NS(id)
 #>         picks_ui(ns("transformer"), picks = x, container = div)
 #>       }
-#> <environment: 0x5642ec48d070>
+#> <environment: 0x55c8d82a5d00>
 #> 
 #> $server
 #> function (id, data) 
@@ -161,8 +146,8 @@ teal_transform_filter(
 #>     decorate_err_msg(assert_reactive(data_out), pre = sprintf("From: 'teal_transform_module()':\nA 'teal_transform_module' with \"%s\" label:", 
 #>         label), post = "Please make sure that this module returns a 'reactive` object containing 'teal_data' class of object.")
 #> }
-#> <bytecode: 0x5642ec4a46d0>
-#> <environment: 0x5642ec4a3780>
+#> <bytecode: 0x55c8d8341690>
+#> <environment: 0x55c8d833ff28>
 #> 
 #> attr(,"label")
 #> [1] "Filter"
@@ -187,7 +172,7 @@ teal_transform_filter(
 #>         ns <- NS(id)
 #>         picks_ui(ns("transformer"), picks = x, container = div)
 #>       }
-#> <environment: 0x5642ec62b1b0>
+#> <environment: 0x55c8d86fd0e0>
 #> 
 #> $server
 #> function (id, data) 
@@ -202,8 +187,8 @@ teal_transform_filter(
 #>     decorate_err_msg(assert_reactive(data_out), pre = sprintf("From: 'teal_transform_module()':\nA 'teal_transform_module' with \"%s\" label:", 
 #>         label), post = "Please make sure that this module returns a 'reactive` object containing 'teal_data' class of object.")
 #> }
-#> <bytecode: 0x5642ec4a46d0>
-#> <environment: 0x5642eb636eb8>
+#> <bytecode: 0x55c8d8341690>
+#> <environment: 0x55c8d69c87a0>
 #> 
 #> attr(,"label")
 #> [1] "Filter"

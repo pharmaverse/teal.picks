@@ -25,8 +25,8 @@ is created it could be either:
 
 A `logical(1)` indicating if any of the elements in picks is delayed.,
 For a single `pick`, such as
-[`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
-[`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
+[`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 or
-[`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
+[`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
 it checks if either `choices` or `selected` are delayed.

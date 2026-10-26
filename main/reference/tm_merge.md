@@ -1,7 +1,6 @@
 # Merge module
 
-Example
-[`teal::module`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html)
+Example [`teal::module`](https://rdrr.io/pkg/teal/man/teal_modules.html)
 containing interactive inputs and displaying results of merge.
 
 ## Usage
@@ -16,8 +15,8 @@ tm_merge(label = "merge-module", picks, transformators = list())
 
   (`character(1)`) Label shown in the navigation item for the module or
   module group. For
-  [`modules()`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html)
-  defaults to `"root"`. See `Details`.
+  [`modules()`](https://rdrr.io/pkg/teal/man/teal_modules.html) defaults
+  to `"root"`. See `Details`.
 
 - picks:
 
@@ -27,12 +26,11 @@ tm_merge(label = "merge-module", picks, transformators = list())
 
   (`list` of `teal_transform_module`) that will be applied to transform
   module's data input. To learn more check
-  [`vignette("transform-input-data", package = "teal")`](https://insightsengineering.github.io/teal/latest-tag/articles/transform-input-data.html).
+  [`vignette("transform-input-data", package = "teal")`](https://cran.rstudio.com/web/packages/teal/vignettes/transform-input-data.html).
 
 ## Value
 
-A
-[`teal::module`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html)
+A [`teal::module`](https://rdrr.io/pkg/teal/man/teal_modules.html)
 object that merges datasets based on user selections and displays the
 results.
 

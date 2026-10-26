@@ -39,10 +39,10 @@ merge_srv(
 - data:
 
   (`reactive`) A reactive expression returning a
-  [teal.data::teal_data](https://insightsengineering.github.io/teal.data/latest-tag/reference/teal_data.html)
+  [teal.data::teal_data](https://rdrr.io/pkg/teal.data/man/teal_data.html)
   object containing the source datasets to be merged. This object must
   have join keys defined via
-  [`teal.data::join_keys()`](https://insightsengineering.github.io/teal.data/latest-tag/reference/join_keys.html)
+  [`teal.data::join_keys()`](https://rdrr.io/pkg/teal.data/man/join_keys.html)
   to enable proper dataset relationships.
 
 - selectors:
@@ -74,7 +74,7 @@ merge_srv(
 A `list` with two reactive elements:
 
 - `data`A `reactive` returning a
-  [teal.data::teal_data](https://insightsengineering.github.io/teal.data/latest-tag/reference/teal_data.html)
+  [teal.data::teal_data](https://rdrr.io/pkg/teal.data/man/teal_data.html)
   object containing the merged dataset. The merged dataset is named
   according to `output_name` parameter. The `teal_data` object includes:
 
@@ -192,7 +192,7 @@ object to determine:
 ## Integration with Selectors
 
 `merge_srv` is designed to work with
-[`picks_srv()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+[`picks_srv()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
 which creates selector objects:
 
     # Create selectors in server
@@ -213,10 +213,10 @@ which creates selector objects:
 
 ## See also
 
-- [`picks_srv()`](https://insightsengineering.github.io/teal.picks/reference/picks_module.md)
+- [`picks_srv()`](https://pharmaverse.github.io/teal.picks/reference/picks_module.md)
   for creating selectors
 
-- [`teal.data::join_keys()`](https://insightsengineering.github.io/teal.data/latest-tag/reference/join_keys.html)
+- [`teal.data::join_keys()`](https://rdrr.io/pkg/teal.data/man/join_keys.html)
   for defining dataset relationships
 
 ## Examples

@@ -56,7 +56,7 @@ matched in multiple ways with `data` to return valid choices:
 
 Mechanism is robust in a sense that it never fails (`tryCatch`) and
 returns `NULL` if no-match found. `NULL` in
-[`determine()`](https://insightsengineering.github.io/teal.picks/reference/determine.md)
+[`determine()`](https://pharmaverse.github.io/teal.picks/reference/determine.md)
 is handled gracefully, by setting `NULL` to all following components of
 `picks`.
 

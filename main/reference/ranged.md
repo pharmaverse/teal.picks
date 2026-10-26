@@ -25,7 +25,7 @@ ranged(min = -Inf, max = Inf)
 ## Value
 
 A function that allows the use of a range in `choices` or `selected` of
-[`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 in `numeric`, `Date`, or `POSIXct` variables.
 
 ## Examples

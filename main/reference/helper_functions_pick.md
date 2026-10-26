@@ -1,10 +1,10 @@
 # Helper functions to check pick attributes
 
 Helper functions for pick objects generated from
-[`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md),
-[`variables()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md),
+[`variables()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 or
-[`values()`](https://insightsengineering.github.io/teal.picks/reference/picks.md):
+[`values()`](https://pharmaverse.github.io/teal.picks/reference/picks.md):
 
 - `is_pick_multiple()` checks if a pick has the `multiple` attribute set
   to `TRUE`.

@@ -1,9 +1,9 @@
 # Interactive picks
 
 Creates UI and server components for interactive
-[`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 in Shiny modules. The module is based on configuration provided via
-[`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 and its responsibility is to determine relevant input values
 
 The module supports both single and combined `picks`:
@@ -54,7 +54,7 @@ picks_srv(id, picks, data)
 - picks:
 
   (`picks` or `list`) object created by
-  [`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  [`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   or a named list of such objects
 
 - container:
@@ -89,7 +89,7 @@ server component (`picks_srv`) manages the reactive logic,
 
 ## See also
 
-[`picks()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+[`picks()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
 for creating \`picks“ objects
 
 ## Examples

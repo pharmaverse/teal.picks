@@ -13,7 +13,7 @@ ensure_picks_datasets(datasets = NULL, x, ...)
 
 - datasets:
 
-  ([`datasets()`](https://insightsengineering.github.io/teal.picks/reference/picks.md)
+  ([`datasets()`](https://pharmaverse.github.io/teal.picks/reference/picks.md)
   object) to use if `x` does not already have a dataset.
 
 - x:
