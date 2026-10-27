@@ -31,6 +31,8 @@
 - `merge_srv` and `tm_merge` to merge `teal` data according to user picks,
 - conversion helpers such as `as.picks` to align with `teal.transform` objects.
 
+teal.picks is developed by [Roche](https://roche.com), [Appsilon](https://www.appsilon.com), and the wider open-source community. [Roche](https://roche.com) and [Appsilon](https://www.appsilon.com) are copyright holders of the project, which is hosted in the [pharmaverse](https://pharmaverse.org) GitHub organisation.
+
 ## Installation
 
 ```r
@@ -68,3 +70,7 @@ Wire `my_picks` into `picks_ui` / `picks_srv` with a reactive `teal_data` object
 ## Getting help
 
 If you encounter a bug or have a feature request, please file an issue. For questions, discussions, and staying up to date, please use the `teal` channel in the [`pharmaverse` slack workspace](https://pharmaverse.slack.com).
+
+## Acknowledgment
+
+teal.picks was created at [Roche](https://roche.com) and is developed together with [Appsilon](https://www.appsilon.com) and the wider open-source community. Thank you to everyone who has contributed code, reported an issue, improved the documentation, or built a module. To get involved, explore the [open issues](https://github.com/pharmaverse/teal.picks/issues) or join the #teal channel in the [pharmaverse Slack](https://pharmaverse.slack.com/).
