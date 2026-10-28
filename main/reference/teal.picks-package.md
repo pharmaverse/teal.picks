@@ -24,7 +24,7 @@ Authors:
 - Dawid Kaledkowski <dawid.kaledkowski@roche.com>
   ([ORCID](https://orcid.org/0000-0001-9533-457X))
 
-- Andre Verissimo <andre.verissimo@roche.com>
+- Andre Verissimo <andre.verissimo@appsilon.com>
   ([ORCID](https://orcid.org/0000-0002-2212-339X))
 
 - Marcin Kosinski <marcin.kosinski.mk1@roche.com>
@@ -32,9 +32,11 @@ Authors:
 - Lluís Revilla Sancho <lluis.revilla_sancho@roche.com>
   ([ORCID](https://orcid.org/0000-0001-9747-2570))
 
-- Oriol Senan <oriol.senan@external.roche.com>
+- Oriol Senan <oriol@appsilon.com>
   ([ORCID](https://orcid.org/0000-0002-9621-3371))
 
 Other contributors:
 
 - F. Hoffmann-La Roche AG \[copyright holder, funder\]
+
+- Appsilon Sp. z o.o. <teal@appsilon.com> \[copyright holder, funder\]

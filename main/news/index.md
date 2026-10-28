@@ -5,6 +5,11 @@
 #### Miscellaneous
 
 - Use functions in `shinytest2` tests when creating an `AppDriver`.
+- teal.picks has moved to the pharmaverse GitHub organisation:
+  <https://github.com/pharmaverse/teal.picks>.
+- Appsilon becomes a core contributor and joins F. Hoffmann-La Roche AG
+  as a copyright holder of teal.picks, working alongside the wider
+  contributor community.
 
 ## teal.picks 0.3.1
 
@@ -112,7 +117,7 @@ CRAN release: 2026-05-19
 - Added
   [`as.picks()`](https://pharmaverse.github.io/teal.picks/reference/as.picks.md)
   for converting
-  [`teal.transform::data_extract_spec`](https://insightsengineering.github.io/teal.transform/latest-tag/reference/data_extract_spec.html)
+  [`teal.transform::data_extract_spec`](https://rdrr.io/pkg/teal.transform/man/data_extract_spec.html)
   objects to picks.
 - Added
   [`teal_transform_filter()`](https://pharmaverse.github.io/teal.picks/reference/as.picks.md)
