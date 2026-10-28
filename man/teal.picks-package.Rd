@@ -23,15 +23,16 @@ Useful links:
 Authors:
 \itemize{
   \item Dawid Kaledkowski \email{dawid.kaledkowski@roche.com} (\href{https://orcid.org/0000-0001-9533-457X}{ORCID})
-  \item Andre Verissimo \email{andre.verissimo@roche.com} (\href{https://orcid.org/0000-0002-2212-339X}{ORCID})
+  \item Andre Verissimo \email{andre.verissimo@appsilon.com} (\href{https://orcid.org/0000-0002-2212-339X}{ORCID})
   \item Marcin Kosinski \email{marcin.kosinski.mk1@roche.com}
   \item Lluís Revilla Sancho \email{lluis.revilla_sancho@roche.com} (\href{https://orcid.org/0000-0001-9747-2570}{ORCID})
-  \item Oriol Senan \email{oriol.senan@external.roche.com} (\href{https://orcid.org/0000-0002-9621-3371}{ORCID})
+  \item Oriol Senan \email{oriol@appsilon.com} (\href{https://orcid.org/0000-0002-9621-3371}{ORCID})
 }
 
 Other contributors:
 \itemize{
   \item F. Hoffmann-La Roche AG [copyright holder, funder]
+  \item Appsilon Sp. z o.o. \email{teal@appsilon.com} [copyright holder, funder]
 }
 
 }

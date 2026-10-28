@@ -3,6 +3,8 @@
 ### Miscellaneous
 
 * Use functions in `shinytest2` tests when creating an `AppDriver`.
+* teal.picks has moved to the pharmaverse GitHub organisation: https://github.com/pharmaverse/teal.picks.
+* Appsilon becomes a core contributor and joins F. Hoffmann-La Roche AG as a copyright holder of teal.picks, working alongside the wider contributor community.
 
 # teal.picks 0.3.1
 

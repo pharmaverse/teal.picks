@@ -7,15 +7,16 @@ Date: 2026-10-20
 Authors@R: c(
     person("Dawid", "Kaledkowski", , "dawid.kaledkowski@roche.com", role = "aut",
            comment = c(ORCID = "0000-0001-9533-457X")),
-    person("Andre", "Verissimo", , "andre.verissimo@roche.com", role = "aut",
+    person("Andre", "Verissimo", , "andre.verissimo@appsilon.com", role = "aut",
            comment = c(ORCID = "0000-0002-2212-339X")),
     person("Marcin", "Kosinski", , "marcin.kosinski.mk1@roche.com", role = "aut"),
     person("Lluís", "Revilla Sancho", , "lluis.revilla_sancho@roche.com", role = "aut",
            comment = c(ORCID = "0000-0001-9747-2570")),
-    person("Oriol", "Senan", , "oriol.senan@external.roche.com", role = "aut",
+    person("Oriol", "Senan", , "oriol@appsilon.com", role = "aut",
            comment = c(ORCID = "0000-0002-9621-3371")),
     person("Dony", "Unardi", , "unardid@gene.com", role = c("rev", "cre")),
-    person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
+    person("F. Hoffmann-La Roche AG", role = c("cph", "fnd")),
+    person("Appsilon Sp. z o.o.", email = "teal@appsilon.com", role = c("cph", "fnd"))
   )
 Description: Allows users to interactively select datasets, variables, and
     values within 'teal' applications using a 'tidyselect'-style
