@@ -1230,3 +1230,92 @@ test_that("(regression) Labels attribute should not be matched", {
     )
   )
 })
+
+
+.summary_parts <- function(html) {
+  html <- as.character(html)
+  title <- sub('.*title="([^"]*)".*', "\\1", html)
+  title <- gsub("&#10;", "\n", title)
+  body <- sub('^<span title="[^"]*">\\s*', "", html)
+  body <- sub("\\s*</span>\\s*$", "", body)
+  list(title = title, body = body)
+}
+
+describe("clip_fixed badge summary", {
+  test_data <- list(iris = iris, mtcars = mtcars)
+  tooltip <- "datasets: iris\nvariables: Species"
+
+  it("creates a namespaced clip_fixed input", {
+    ui_output <- picks_ui("test", picks(datasets("iris", "iris"), variables()))
+    expect_match(as.character(ui_output), 'id="test-clip_fixed"')
+  })
+
+  it("default summary includes fixed picks and the full tooltip", {
+    test_picks <- picks(
+      datasets("iris", "iris"),
+      variables(c("Species", "Sepal.Length"), selected = "Species")
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(test_data)),
+      expr = {
+        parts <- .summary_parts(output$summary$html)
+        expect_match(parts$body, "iris")
+        expect_match(parts$body, "Species")
+        expect_identical(parts$title, tooltip)
+      }
+    )
+  })
+
+  it("omits a fixed dataset or variable from the summary but keeps the tooltip", {
+    cases <- list(
+      list(
+        picks = picks(
+          datasets("iris", "iris"),
+          variables(c("Species", "Sepal.Length"), selected = "Species")
+        ),
+        has = "Species",
+        lacks = "iris"
+      ),
+      list(
+        picks = picks(
+          datasets(c("iris", "mtcars"), selected = "iris"),
+          variables("Species")
+        ),
+        has = "iris",
+        lacks = "Species"
+      )
+    )
+    for (case in cases) {
+      shiny::testServer(
+        picks_srv,
+        args = list(id = "test", picks = case$picks, data = shiny::reactive(test_data)),
+        expr = {
+          session$setInputs(clip_fixed = TRUE)
+          parts <- .summary_parts(output$summary$html)
+          expect_match(parts$body, case$has)
+          expect_no_match(parts$body, case$lacks)
+          expect_identical(parts$title, tooltip)
+        }
+      )
+    }
+  })
+
+  it("keeps the current full summary when every pick is fixed", {
+    test_picks <- picks(
+      datasets("iris", "iris"),
+      variables("Species")
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(test_data)),
+      expr = {
+        session$setInputs(clip_fixed = TRUE)
+        parts <- .summary_parts(output$summary$html)
+        expect_match(parts$body, "iris")
+        expect_match(parts$body, "Species")
+        expect_identical(parts$title, tooltip)
+      }
+    )
+  })
+})

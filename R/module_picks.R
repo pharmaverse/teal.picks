@@ -23,6 +23,9 @@
 #' @param picks (`picks` or `list`) object created by `picks()` or a named list of such objects
 #' @param container (`character(1)` or `function`) UI container type. Can be one of `htmltools::tags`
 #' functions. By default, elements are wrapped in a package-specific drop-down.
+#' @param clip_fixed (`logical(1)`) if `TRUE`, omit fixed picks from the collapsed badge summary.
+#' The tooltip still shows the full selection. If every pick is fixed, the current full summary is
+#' kept so the badge is not blank. Defaults to `FALSE`.
 #' @param data (`reactive`) Reactive expression returning the data object to be used for populating choices
 #'
 #' @return
@@ -73,31 +76,33 @@ NULL
 
 #' @rdname picks_module
 #' @export
-picks_ui <- function(id, picks, container = "badge_dropdown") {
+picks_ui <- function(id, picks, container = "badge_dropdown", clip_fixed = FALSE) {
   UseMethod("picks_ui", picks)
 }
 
 #' @rdname picks_module
 #' @export
-picks_ui.list <- function(id = "", picks, container = "badge_dropdown") {
+picks_ui.list <- function(id = "", picks, container = "badge_dropdown", clip_fixed = FALSE) {
   checkmate::assert_list(picks, names = "unique", types = "picks")
   checkmate::assert_string(id, null.ok = TRUE)
+  checkmate::assert_flag(clip_fixed)
   if (identical(id, "")) {
     id <- NULL
   }
   ns <- shiny::NS(id)
   out <- lapply(
     Filter(length, names(picks)),
-    function(name) picks_ui(ns(name), picks[[name]], container = container)
+    function(name) picks_ui(ns(name), picks[[name]], container = container, clip_fixed = clip_fixed)
   )
   htmltools::tagList(out)
 }
 
 #' @rdname picks_module
 #' @export
-picks_ui.picks <- function(id, picks, container = "badge_dropdown") {
+picks_ui.picks <- function(id, picks, container = "badge_dropdown", clip_fixed = FALSE) {
   checkmate::assert_string(id)
   checkmate::assert_class(picks, "picks")
+  checkmate::assert_flag(clip_fixed)
   ns <- shiny::NS(id)
   badge_label <- shiny::uiOutput(ns("summary"), container = htmltools::tags$span)
   content <- lapply(picks, function(x) .pick_ui(id = ns(methods::is(x))))
@@ -113,7 +118,13 @@ picks_ui.picks <- function(id, picks, container = "badge_dropdown") {
   if (!(methods::is(out, "shiny.tag") || methods::is(out, "shiny.tag.list"))) {
     stop("`container` should be one of `htmltools::tags` or generate one.")
   }
-  htmltools::tags$div(out)
+  htmltools::tags$div(
+    out,
+    htmltools::tags$div(
+      style = "display:none;",
+      shiny::checkboxInput(ns("clip_fixed"), label = NULL, value = clip_fixed)
+    )
+  )
 }
 
 #' @rdname picks_module
@@ -192,7 +203,7 @@ picks_srv.picks <- function(id, picks, data) {
         ),
         collapse = "\n"
       )
-      htmltools::tags$span(title = hover_text, tagList(badge_value))
+      htmltools::tags$span(title = hover_text, tagList(.badge_summary(badge_value, picks, input$clip_fixed)))
     })
 
     Reduce(
@@ -265,6 +276,22 @@ picks_srv.picks <- function(id, picks, data) {
 
     picks_resolved
   })
+}
+
+
+# When clip_fixed is TRUE, drop fixed picks from the collapsed badge, using the
+# initial picks specification. If every pick is fixed, keep the current full
+# summary so the badge still shows the selection.
+.badge_summary <- function(badge_value, picks, clip_fixed) {
+  if (!isTRUE(clip_fixed)) {
+    return(badge_value)
+  }
+  unfixed <- !vapply(picks, is_pick_fixed, logical(1))
+  if (any(unfixed)) {
+    badge_value[unfixed]
+  } else {
+    badge_value
+  }
 }
 
 .pick_ui <- function(id) {
