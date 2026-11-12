@@ -1237,7 +1237,8 @@ describe("clip_fixed badge summary", {
   tooltip <- "datasets: iris\nvariables: Species"
 
   summary_from <- function(html) {
-    parsed <- rvest::read_html(as.character(html))
+    skip_if_not_installed("rvest")
+    parsed <- rvest::read_html(html)
     list(
       title = rvest::html_attr(rvest::html_node(parsed, "span"), "title"),
       body = rvest::html_text(parsed)
