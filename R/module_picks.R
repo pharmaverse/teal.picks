@@ -23,6 +23,9 @@
 #' @param picks (`picks` or `list`) object created by `picks()` or a named list of such objects
 #' @param container (`character(1)` or `function`) UI container type. Can be one of `htmltools::tags`
 #' functions. By default, elements are wrapped in a package-specific drop-down.
+#' @param clip_fixed (`logical(1)`) if `TRUE`, omit fixed picks from the collapsed badge summary.
+#' The tooltip still shows the full selection. If every pick is fixed, the current full summary is
+#' kept so the badge is not blank. Defaults to `FALSE`.
 #' @param data (`reactive`) Reactive expression returning the data object to be used for populating choices
 #'
 #' @return
@@ -73,31 +76,33 @@ NULL
 
 #' @rdname picks_module
 #' @export
-picks_ui <- function(id, picks, container = "badge_dropdown") {
+picks_ui <- function(id, picks, container = "badge_dropdown", clip_fixed = FALSE) {
   UseMethod("picks_ui", picks)
 }
 
 #' @rdname picks_module
 #' @export
-picks_ui.list <- function(id = "", picks, container = "badge_dropdown") {
+picks_ui.list <- function(id = "", picks, container = "badge_dropdown", clip_fixed = FALSE) {
   checkmate::assert_list(picks, names = "unique", types = "picks")
   checkmate::assert_string(id, null.ok = TRUE)
+  checkmate::assert_flag(clip_fixed)
   if (identical(id, "")) {
     id <- NULL
   }
   ns <- shiny::NS(id)
   out <- lapply(
     Filter(length, names(picks)),
-    function(name) picks_ui(ns(name), picks[[name]], container = container)
+    function(name) picks_ui(ns(name), picks[[name]], container = container, clip_fixed = clip_fixed)
   )
   htmltools::tagList(out)
 }
 
 #' @rdname picks_module
 #' @export
-picks_ui.picks <- function(id, picks, container = "badge_dropdown") {
+picks_ui.picks <- function(id, picks, container = "badge_dropdown", clip_fixed = FALSE) {
   checkmate::assert_string(id)
   checkmate::assert_class(picks, "picks")
+  checkmate::assert_flag(clip_fixed)
   ns <- shiny::NS(id)
   badge_label <- shiny::uiOutput(ns("summary"), container = htmltools::tags$span)
   content <- lapply(picks, function(x) .pick_ui(id = ns(methods::is(x))))
@@ -113,7 +118,13 @@ picks_ui.picks <- function(id, picks, container = "badge_dropdown") {
   if (!(methods::is(out, "shiny.tag") || methods::is(out, "shiny.tag.list"))) {
     stop("`container` should be one of `htmltools::tags` or generate one.")
   }
-  htmltools::tags$div(out)
+  htmltools::tags$div(
+    out,
+    htmltools::tags$div(
+      style = "display:none;",
+      shiny::checkboxInput(ns("clip_fixed"), label = NULL, value = clip_fixed)
+    )
+  )
 }
 
 #' @rdname picks_module
@@ -165,8 +176,16 @@ picks_srv.picks <- function(id, picks, data) {
     )
 
     badge <- shiny::reactive({
+      resolved <- picks_resolved()
+      # Drop fixed picks unless every pick is fixed, so the badge is not blank.
+      if (isTRUE(input$clip_fixed)) {
+        unfixed <- !vapply(picks, is_pick_fixed, logical(1))
+        if (any(unfixed)) {
+          resolved <- resolved[unfixed]
+        }
+      }
       lapply(
-        picks_resolved(),
+        resolved,
         function(x) {
           label <- if (inherits(x, "values")) {
             if (!setequal(x$choices, x$selected)) {
@@ -183,16 +202,20 @@ picks_srv.picks <- function(id, picks, data) {
     })
 
     output$summary <- shiny::renderUI({
-      badge_value <- badge()
+      resolved <- picks_resolved()
       hover_text <- paste(
         vapply(
-          names(badge_value)[names(badge_value) %in% c("datasets", "variables")],
-          function(x) sprintf("%s: %s", x, paste(badge_value[[x]], collapse = ", ")),
+          names(resolved)[names(resolved) %in% c("datasets", "variables")],
+          function(x) {
+            selected <- resolved[[x]]$selected
+            label <- if (length(selected)) toString(selected) else "~"
+            sprintf("%s: %s", x, label)
+          },
           FUN.VALUE = character(1)
         ),
         collapse = "\n"
       )
-      htmltools::tags$span(title = hover_text, tagList(badge_value))
+      htmltools::tags$span(title = hover_text, tagList(badge()))
     })
 
     Reduce(

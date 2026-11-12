@@ -1,5 +1,9 @@
 # teal.picks 0.3.1.9002
 
+### Enhancements
+
+* `picks_ui()` gains `clip_fixed` to omit fixed picks from the collapsed badge summary. The tooltip still shows the full selection. When every pick is fixed, the summary is left unchanged (#144).
+
 ### Miscellaneous
 
 * Use functions in `shinytest2` tests when creating an `AppDriver`.

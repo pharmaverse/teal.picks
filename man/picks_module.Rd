@@ -10,11 +10,11 @@
 \alias{picks_srv.picks}
 \title{Interactive picks}
 \usage{
-picks_ui(id, picks, container = "badge_dropdown")
+picks_ui(id, picks, container = "badge_dropdown", clip_fixed = FALSE)
 
-\method{picks_ui}{list}(id = "", picks, container = "badge_dropdown")
+\method{picks_ui}{list}(id = "", picks, container = "badge_dropdown", clip_fixed = FALSE)
 
-\method{picks_ui}{picks}(id, picks, container = "badge_dropdown")
+\method{picks_ui}{picks}(id, picks, container = "badge_dropdown", clip_fixed = FALSE)
 
 picks_srv(id, picks, data)
 
@@ -39,6 +39,10 @@ all of them with a single \code{picks_srv()} call.
 
 \item{container}{(\code{character(1)} or \code{function}) UI container type. Can be one of \code{htmltools::tags}
 functions. By default, elements are wrapped in a package-specific drop-down.}
+
+\item{clip_fixed}{(\code{logical(1)}) if \code{TRUE}, omit fixed picks from the collapsed badge summary.
+The tooltip still shows the full selection. If every pick is fixed, the current full summary is
+kept so the badge is not blank. Defaults to \code{FALSE}.}
 
 \item{data}{(\code{reactive}) Reactive expression returning the data object to be used for populating choices}
 }
