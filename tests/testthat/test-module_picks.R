@@ -1232,18 +1232,17 @@ test_that("(regression) Labels attribute should not be matched", {
 })
 
 
-.summary_parts <- function(html) {
-  html <- as.character(html)
-  title <- sub('.*title="([^"]*)".*', "\\1", html)
-  title <- gsub("&#10;", "\n", title)
-  body <- sub('^<span title="[^"]*">\\s*', "", html)
-  body <- sub("\\s*</span>\\s*$", "", body)
-  list(title = title, body = body)
-}
-
 describe("clip_fixed badge summary", {
   test_data <- list(iris = iris, mtcars = mtcars)
   tooltip <- "datasets: iris\nvariables: Species"
+
+  summary_from <- function(html) {
+    parsed <- rvest::read_html(as.character(html))
+    list(
+      title = rvest::html_attr(rvest::html_node(parsed, "span"), "title"),
+      body = rvest::html_text(parsed)
+    )
+  }
 
   it("creates a namespaced clip_fixed input", {
     ui_output <- picks_ui("test", picks(datasets("iris", "iris"), variables()))
@@ -1259,7 +1258,7 @@ describe("clip_fixed badge summary", {
       picks_srv,
       args = list(id = "test", picks = test_picks, data = shiny::reactive(test_data)),
       expr = {
-        parts <- .summary_parts(output$summary$html)
+        parts <- summary_from(output$summary$html)
         expect_match(parts$body, "iris")
         expect_match(parts$body, "Species")
         expect_identical(parts$title, tooltip)
@@ -1292,7 +1291,7 @@ describe("clip_fixed badge summary", {
         args = list(id = "test", picks = case$picks, data = shiny::reactive(test_data)),
         expr = {
           session$setInputs(clip_fixed = TRUE)
-          parts <- .summary_parts(output$summary$html)
+          parts <- summary_from(output$summary$html)
           expect_match(parts$body, case$has)
           expect_no_match(parts$body, case$lacks)
           expect_identical(parts$title, tooltip)
@@ -1311,7 +1310,7 @@ describe("clip_fixed badge summary", {
       args = list(id = "test", picks = test_picks, data = shiny::reactive(test_data)),
       expr = {
         session$setInputs(clip_fixed = TRUE)
-        parts <- .summary_parts(output$summary$html)
+        parts <- summary_from(output$summary$html)
         expect_match(parts$body, "iris")
         expect_match(parts$body, "Species")
         expect_identical(parts$title, tooltip)

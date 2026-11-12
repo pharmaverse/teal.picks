@@ -176,8 +176,16 @@ picks_srv.picks <- function(id, picks, data) {
     )
 
     badge <- shiny::reactive({
-      badge_value <- lapply(
-        picks_resolved(),
+      resolved <- picks_resolved()
+      # Drop fixed picks unless every pick is fixed, so the badge is not blank.
+      if (isTRUE(input$clip_fixed)) {
+        unfixed <- !vapply(picks, is_pick_fixed, logical(1))
+        if (any(unfixed)) {
+          resolved <- resolved[unfixed]
+        }
+      }
+      lapply(
+        resolved,
         function(x) {
           label <- if (inherits(x, "values")) {
             if (!setequal(x$choices, x$selected)) {
@@ -191,14 +199,6 @@ picks_srv.picks <- function(id, picks, data) {
           label
         }
       )
-      # Drop fixed picks unless every pick is fixed, so the badge is not blank.
-      if (isTRUE(input$clip_fixed)) {
-        unfixed <- !vapply(picks, is_pick_fixed, logical(1))
-        if (any(unfixed)) {
-          badge_value <- badge_value[unfixed]
-        }
-      }
-      badge_value
     })
 
     output$summary <- shiny::renderUI({
