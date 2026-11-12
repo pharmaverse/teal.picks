@@ -176,7 +176,7 @@ picks_srv.picks <- function(id, picks, data) {
     )
 
     badge <- shiny::reactive({
-      lapply(
+      badge_value <- lapply(
         picks_resolved(),
         function(x) {
           label <- if (inherits(x, "values")) {
@@ -191,19 +191,31 @@ picks_srv.picks <- function(id, picks, data) {
           label
         }
       )
+      # Drop fixed picks unless every pick is fixed, so the badge is not blank.
+      if (isTRUE(input$clip_fixed)) {
+        unfixed <- !vapply(picks, is_pick_fixed, logical(1))
+        if (any(unfixed)) {
+          badge_value <- badge_value[unfixed]
+        }
+      }
+      badge_value
     })
 
     output$summary <- shiny::renderUI({
-      badge_value <- badge()
+      resolved <- picks_resolved()
       hover_text <- paste(
         vapply(
-          names(badge_value)[names(badge_value) %in% c("datasets", "variables")],
-          function(x) sprintf("%s: %s", x, paste(badge_value[[x]], collapse = ", ")),
+          names(resolved)[names(resolved) %in% c("datasets", "variables")],
+          function(x) {
+            selected <- resolved[[x]]$selected
+            label <- if (length(selected)) toString(selected) else "~"
+            sprintf("%s: %s", x, label)
+          },
           FUN.VALUE = character(1)
         ),
         collapse = "\n"
       )
-      htmltools::tags$span(title = hover_text, tagList(.badge_summary(badge_value, picks, input$clip_fixed)))
+      htmltools::tags$span(title = hover_text, tagList(badge()))
     })
 
     Reduce(
@@ -276,22 +288,6 @@ picks_srv.picks <- function(id, picks, data) {
 
     picks_resolved
   })
-}
-
-
-# When clip_fixed is TRUE, drop fixed picks from the collapsed badge, using the
-# initial picks specification. If every pick is fixed, keep the current full
-# summary so the badge still shows the selection.
-.badge_summary <- function(badge_value, picks, clip_fixed) {
-  if (!isTRUE(clip_fixed)) {
-    return(badge_value)
-  }
-  unfixed <- !vapply(picks, is_pick_fixed, logical(1))
-  if (any(unfixed)) {
-    badge_value[unfixed]
-  } else {
-    badge_value
-  }
 }
 
 .pick_ui <- function(id) {
