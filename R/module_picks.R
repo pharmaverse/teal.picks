@@ -23,6 +23,12 @@
 #' @param picks (`picks` or `list`) object created by `picks()` or a named list of such objects
 #' @param container (`character(1)` or `function`) UI container type. Can be one of `htmltools::tags`
 #' functions. By default, elements are wrapped in a package-specific drop-down.
+#' @param clip_fixed (`logical(1)`) if `TRUE`, omit fixed picks from the collapsed badge summary.
+#' The tooltip still shows the full selection. If every pick is fixed, the current full summary is
+#' kept so the badge is not blank. For a single `picks` object, defaults to `FALSE`.
+#' For a list, defaults to `NA`: clip fixed picks in every element unless the fixed dataset
+#' picks select multiple distinct datasets across the list. `TRUE` or `FALSE` overrides this
+#' automatic choice for all elements.
 #' @param data (`reactive`) Reactive expression returning the data object to be used for populating choices
 #'
 #' @return
@@ -118,16 +124,22 @@ picks_ui.picks <- function(id, picks, container = "badge_dropdown") {
 
 #' @rdname picks_module
 #' @export
-picks_srv <- function(id, picks, data) {
+picks_srv <- function(id, picks, data, clip_fixed) {
   checkmate::assert_class(data, "reactive")
   UseMethod("picks_srv", picks)
 }
 
 #' @rdname picks_module
 #' @export
-picks_srv.list <- function(id = "", picks, data) {
+picks_srv.list <- function(id = "", picks, data, clip_fixed = NA) {
   checkmate::assert_named(picks, type = "unique")
   checkmate::assert_string(id, null.ok = TRUE)
+  checkmate::assert_flag(clip_fixed, na.ok = TRUE)
+  if (is.na(clip_fixed)) {
+    fixed_datasets <- Filter(is_pick_fixed, lapply(Filter(length, picks), `[[`, "datasets"))
+    datanames <- lapply(fixed_datasets, function(x) determine(x, shiny::isolate(data()))$x$selected)
+    clip_fixed <- length(unique(unlist(datanames))) <= 1L
+  }
   if (identical(trimws(id), "")) {
     id <- NULL
   }
@@ -135,13 +147,14 @@ picks_srv.list <- function(id = "", picks, data) {
   sapply(
     names(Filter(length, picks)),
     USE.NAMES = TRUE,
-    function(name) picks_srv(ns(name), picks[[name]], data)
+    function(name) picks_srv(ns(name), picks[[name]], data, clip_fixed = clip_fixed)
   )
 }
 
 #' @rdname picks_module
 #' @export
-picks_srv.picks <- function(id, picks, data) {
+picks_srv.picks <- function(id, picks, data, clip_fixed = FALSE) {
+  checkmate::assert_flag(clip_fixed)
   checkmate::assert_named(picks, type = "unique")
   checkmate::assert_string(id)
   shiny::moduleServer(id, function(input, output, session) {
@@ -165,8 +178,16 @@ picks_srv.picks <- function(id, picks, data) {
     )
 
     badge <- shiny::reactive({
+      resolved <- picks_resolved()
+      # Drop fixed picks unless every pick is fixed, so the badge is not blank.
+      if (clip_fixed) {
+        unfixed <- !vapply(picks, is_pick_fixed, logical(1))
+        if (any(unfixed)) {
+          resolved <- resolved[unfixed]
+        }
+      }
       lapply(
-        picks_resolved(),
+        resolved,
         function(x) {
           label <- if (inherits(x, "values")) {
             if (!setequal(x$choices, x$selected)) {
@@ -183,16 +204,20 @@ picks_srv.picks <- function(id, picks, data) {
     })
 
     output$summary <- shiny::renderUI({
-      badge_value <- badge()
+      resolved <- picks_resolved()
       hover_text <- paste(
         vapply(
-          names(badge_value)[names(badge_value) %in% c("datasets", "variables")],
-          function(x) sprintf("%s: %s", x, paste(badge_value[[x]], collapse = ", ")),
+          names(resolved)[names(resolved) %in% c("datasets", "variables")],
+          function(x) {
+            selected <- resolved[[x]]$selected
+            label <- if (length(selected)) toString(selected) else "~"
+            sprintf("%s: %s", x, label)
+          },
           FUN.VALUE = character(1)
         ),
         collapse = "\n"
       )
-      htmltools::tags$span(title = hover_text, tagList(badge_value))
+      htmltools::tags$span(title = hover_text, tagList(badge()))
     })
 
     Reduce(

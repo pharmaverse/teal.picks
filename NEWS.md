@@ -1,5 +1,9 @@
 # teal.picks 0.3.1.9002
 
+### Enhancements
+
+* `picks_srv()` gains `clip_fixed` to omit fixed picks from the collapsed badge summary. For lists, clipping is automatic unless fixed dataset picks select multiple distinct datasets. The tooltip still shows the full selection. When every pick is fixed, the summary is left unchanged (#144).
+
 ### Miscellaneous
 
 * Use functions in `shinytest2` tests when creating an `AppDriver`.

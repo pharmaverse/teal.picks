@@ -16,11 +16,11 @@ picks_ui(id, picks, container = "badge_dropdown")
 
 \method{picks_ui}{picks}(id, picks, container = "badge_dropdown")
 
-picks_srv(id, picks, data)
+picks_srv(id, picks, data, clip_fixed)
 
-\method{picks_srv}{list}(id = "", picks, data)
+\method{picks_srv}{list}(id = "", picks, data, clip_fixed = NA)
 
-\method{picks_srv}{picks}(id, picks, data)
+\method{picks_srv}{picks}(id, picks, data, clip_fixed = FALSE)
 }
 \arguments{
 \item{id}{(\code{character(1)}) Shiny module ID. Required when \code{picks} is a single \code{picks} object.
@@ -41,6 +41,13 @@ all of them with a single \code{picks_srv()} call.
 functions. By default, elements are wrapped in a package-specific drop-down.}
 
 \item{data}{(\code{reactive}) Reactive expression returning the data object to be used for populating choices}
+
+\item{clip_fixed}{(\code{logical(1)}) if \code{TRUE}, omit fixed picks from the collapsed badge summary.
+The tooltip still shows the full selection. If every pick is fixed, the current full summary is
+kept so the badge is not blank. For a single \code{picks} object, defaults to \code{FALSE}.
+For a list, defaults to \code{NA}: clip fixed picks in every element unless the fixed dataset
+picks select multiple distinct datasets across the list. \code{TRUE} or \code{FALSE} overrides this
+automatic choice for all elements.}
 }
 \value{
 \itemize{

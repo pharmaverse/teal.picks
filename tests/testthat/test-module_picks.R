@@ -1230,3 +1230,117 @@ test_that("(regression) Labels attribute should not be matched", {
     )
   )
 })
+
+
+describe("clip_fixed badge summary", {
+  test_data <- list(iris = iris, mtcars = mtcars)
+  tooltip <- "datasets: iris\nvariables: Species"
+
+  summary_from <- function(html) {
+    skip_if_not_installed("rvest")
+    parsed <- rvest::read_html(html)
+    list(
+      title = rvest::html_attr(rvest::html_node(parsed, "span"), "title"),
+      body = rvest::html_text(parsed)
+    )
+  }
+
+  it("default summary includes fixed picks and the full tooltip", {
+    test_picks <- picks(
+      datasets("iris", "iris"),
+      variables(c("Species", "Sepal.Length"), selected = "Species")
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(test_data)),
+      expr = {
+        parts <- summary_from(output$summary$html)
+        expect_match(parts$body, "iris")
+        expect_match(parts$body, "Species")
+        expect_identical(parts$title, tooltip)
+      }
+    )
+  })
+
+  it("omits a fixed dataset or variable from the summary but keeps the tooltip", {
+    cases <- list(
+      list(
+        picks = picks(
+          datasets("iris", "iris"),
+          variables(c("Species", "Sepal.Length"), selected = "Species")
+        ),
+        has = "Species",
+        lacks = "iris"
+      ),
+      list(
+        picks = picks(
+          datasets(c("iris", "mtcars"), selected = "iris"),
+          variables("Species")
+        ),
+        has = "iris",
+        lacks = "Species"
+      )
+    )
+    for (case in cases) {
+      shiny::testServer(
+        picks_srv,
+        args = list(id = "test", picks = case$picks, data = shiny::reactive(test_data), clip_fixed = TRUE),
+        expr = {
+          parts <- summary_from(output$summary$html)
+          expect_match(parts$body, case$has)
+          expect_no_match(parts$body, case$lacks)
+          expect_identical(parts$title, tooltip)
+        }
+      )
+    }
+  })
+
+  it("keeps the current full summary when every pick is fixed", {
+    test_picks <- picks(
+      datasets("iris", "iris"),
+      variables("Species")
+    )
+    shiny::testServer(
+      picks_srv,
+      args = list(id = "test", picks = test_picks, data = shiny::reactive(test_data), clip_fixed = TRUE),
+      expr = {
+        parts <- summary_from(output$summary$html)
+        expect_match(parts$body, "iris")
+        expect_match(parts$body, "Species")
+        expect_identical(parts$title, tooltip)
+      }
+    )
+  })
+
+  it("chooses clipping for the whole list from fixed datasets unless overridden", {
+    cases <- list(
+      list(dataset = "iris", clip_fixed = NA, clipped = TRUE),
+      list(dataset = "mtcars", clip_fixed = NA, clipped = FALSE),
+      list(dataset = "iris", clip_fixed = FALSE, clipped = FALSE),
+      list(dataset = "mtcars", clip_fixed = TRUE, clipped = TRUE)
+    )
+    for (case in cases) {
+      test_picks <- list(
+        first = picks(datasets("iris", "iris"), variables(c("Species", "Sepal.Length"), selected = "Species")),
+        second = picks(datasets(case$dataset), variables()),
+        selectable = picks(
+          datasets(c("iris", "mtcars"), selected = "mtcars"),
+          variables(tidyselect::all_of("mpg"), fixed = TRUE)
+        )
+      )
+      shiny::testServer(
+        function(input, output, session) {
+          picks_srv(picks = test_picks, data = shiny::reactive(test_data), clip_fixed = case$clip_fixed)
+        },
+        expr = {
+          fixed_labels <- c(first = "iris", second = case$dataset, selectable = "mpg")
+          visible <- vapply(names(test_picks), function(name) {
+            parts <- summary_from(output[[paste0(name, "-summary")]]$html)
+            grepl(fixed_labels[[name]], parts$body, fixed = TRUE)
+          }, logical(1))
+          expect_identical(unname(visible), rep(!case$clipped, 3L))
+        }
+      )
+    }
+  })
+})
