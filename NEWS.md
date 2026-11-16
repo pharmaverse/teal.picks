@@ -2,7 +2,7 @@
 
 ### Enhancements
 
-* `picks_ui()` gains `clip_fixed` to omit fixed picks from the collapsed badge summary. The tooltip still shows the full selection. When every pick is fixed, the summary is left unchanged (#144).
+* `picks_srv()` gains `clip_fixed` to omit fixed picks from the collapsed badge summary. For lists, clipping is automatic unless fixed dataset picks select multiple distinct datasets. The tooltip still shows the full selection. When every pick is fixed, the summary is left unchanged (#144).
 
 ### Miscellaneous
 
