@@ -92,3 +92,8 @@
   padding: 0;
   border: none;
 }
+
+.badge-dropdown-label::before,
+.fixed-picks label::before {
+  content: "\200b"; /* zero-width space: forces one line, adds no visible width */
+}

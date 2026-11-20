@@ -3,6 +3,7 @@
 ### Miscellaneous
 
 * Use functions in `shinytest2` tests when creating an `AppDriver`.
+* Add minimal height to empty summary picks to integrate better in UI (#150).
 * teal.picks has moved to the pharmaverse GitHub organisation: https://github.com/pharmaverse/teal.picks.
 * Appsilon becomes a core contributor and joins F. Hoffmann-La Roche AG as a copyright holder of teal.picks, working alongside the wider contributor community.
 
