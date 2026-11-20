@@ -194,6 +194,7 @@ picks_srv.picks <- function(id, picks, data) {
       )
       htmltools::tags$span(title = hover_text, tagList(badge_value))
     })
+    shiny::outputOptions(output, "summary", suspendWhenHidden = FALSE) # Ensure the summary UI is updated even when hidden
 
     Reduce(
       function(this_data, slot_name) { # this_data is a (drilled-down) data for current pick
