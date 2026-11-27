@@ -116,6 +116,11 @@ ensure_picks_datasets <- function(datasets = NULL, x, ...) {
     if (any(repated_pick)) {
       stop("Some pick is repeated: avoid them on ...")
     }
-    do.call(teal.picks::picks, c(list(datasets, x), dots_arg))
+
+    picks_args <- c(list(x), dots_arg)
+    if (!any(vapply(picks_args, inherits, logical(1L), "datasets"))) {
+      picks_args <- c(list(datasets), picks_args)
+    }
+    do.call(teal.picks::picks, picks_args)
   }
 }
