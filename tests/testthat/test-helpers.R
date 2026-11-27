@@ -144,24 +144,57 @@ describe("ensure_picks_datasets", {
   it("throws error when duplicated pick of the same class", {
     expect_error(ensure_picks_datasets(datasets("ADSL", "ADSL"), x = variables("SEX", "SEX"), variables("SEX")))
   })
+
   it("Reuse the dataset from x if it is a picks", {
     out <- ensure_picks_datasets("ADTTE", x = picks(datasets("ADSL", "ADSL"), variables("SEX")))
     expect_equal(out$datasets$selected, "ADSL")
     expect_length(out, 2)
   })
+
   it("Appends correctly extra picks", {
     out <- ensure_picks_datasets(datasets("ADSL", "ADSL"), x = variables("SEX", "SEX"), values(c("F", "M"), "F"))
     expect_length(out, 3)
   })
+
   it("Keeps the original dataset if x is not a picks", {
     out <- ensure_picks_datasets(datasets("ADSL", "ADSL"), x = variables("SEX", "SEX"))
     expect_length(out, 2)
     expect_equal(out$datasets$selected, "ADSL")
   })
+
   it("Keeps the original dataset if x is picks without datasets", {
     out <- ensure_picks_datasets(datasets("ADSL", "ADSL"), x = picks(variables("SEX", "SEX"), check_dataset = FALSE))
     expect_equal(out$datasets$selected, "ADSL")
     expect_length(out, 2)
+  })
+
+  it("returns itself when it is already a pick object with dataset", {
+    pick <- ensure_picks_datasets(dataset = datasets("else"), picks(datasets("dataset"), variables()))
+    expect_s3_class(pick, "picks")
+    expect_equal(pick$dataset, datasets("dataset"))
+  })
+  it("fills the dataset element when it receives a picks object", {
+    pick <- ensure_picks_datasets(dataset = datasets("else"), picks(variables(), check_dataset = FALSE))
+    expect_s3_class(pick, "picks")
+    expect_equal(pick$dataset, datasets("else"))
+  })
+  it("creates a pick object with dataset", {
+    pick <- ensure_picks_datasets(dataset = datasets("else"), datasets("dataset"))
+    expect_s3_class(pick, "picks")
+    expect_equal(pick$dataset, datasets("dataset"))
+  })
+
+  it("creates a pick object with dataset and variables", {
+    pick <- ensure_picks_datasets(dataset = datasets("else"), picks(datasets("dataset"), variables()))
+    expect_s3_class(pick, "picks")
+    expect_equal(pick$dataset, datasets("dataset"))
+  })
+
+  it("throws an error when arguments are not supported", {
+    expect_error(
+      ensure_picks_datasets(dataset = datasets("else"), "unsupported_argument"),
+      "Assertion on 'x' failed"
+    )
   })
 })
 
